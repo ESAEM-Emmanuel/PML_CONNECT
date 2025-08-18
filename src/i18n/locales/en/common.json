@@ -1,0 +1,82 @@
+{
+  "app_name": "PML_CONNECT",
+  "nav": {
+    "home": "Home",
+    "countries": "Countries",
+    "cities": "Cities",
+    "products": "Products",
+    "logout": "Logout",
+    "login": "Login",
+    "profile": "Profile",
+    "signup": "Sign up"
+  },
+  "auth": {
+    "email": "Email",
+    "phone_or_email": "Phone or Email",
+    "password": "Password",
+    "password_confirm": "Confirm password",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password?",
+    "login": "Login",
+    "signup": "Sign up",
+    "reset_link_sent": "Reset link sent",
+    "name": "Name",
+    "have_account": "Already have an account?",
+    "no_account": "No account yet?",
+    "signup_success": "Account created successfully!",
+    "lastName": "Last Name",
+    "username": "Username",
+    "firstName": "First Name",
+    "phone": "TélPhoneéphone",
+    "choose_country": "Choose Country",
+    "choose_town": "Choose Town",
+    "photo_url": "Photo (optionnel)"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female"
+  },
+  "loading": "Chargement…",
+  "home": {
+    "title": "Welcome to {{app}}",
+    "subtitle": "Your gateway to the people who matter."
+  },
+  "crud": {
+    "create": "Create",
+    "update": "Update",
+    "delete": "Delete",
+    "confirm_delete": "Confirm deletion?",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search..."
+  },
+  "country": {
+    "name": "Country name",
+    "code": "Country code",
+    "title": "Countries management"
+  },
+  "city": {
+    "name": "City name",
+    "country": "Country",
+    "title": "Cities management"
+  },
+  "product": {
+    "name": "Product name",
+    "price": "Price",
+    "title": "Products management"
+  },
+  "language": {
+    "label": "Language",
+    "fr": "French",
+    "en": "English"
+  },
+  "errors": {
+    "required": "Required field",
+    "network": "Network error",
+    "unknown": "Unknown error"
+  },
+  "mode": {
+    "light": "Switch to Light Mode",
+    "dark": "Switch to Dark Mode"
+  }
+}

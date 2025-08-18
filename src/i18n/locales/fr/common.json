@@ -1,0 +1,84 @@
+{
+  "app_name": "PML_CONNECT",
+  "nav": {
+    "home": "Accueil",
+    "countries": "Pays",
+    "cities": "Villes",
+    "products": "Produits",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+    "profile": "Profil",
+    "signup": "Créer un compte"
+  },
+  "auth": {
+    "email": "Email",
+    "phone_or_email": "Téléphone ou Email",
+    "password": "Mot de passe",
+    "password_confirm": "Confirmation du mot de passe",
+    "remember_me": "Se souvenir de moi",
+    "forgot_password": "Mot de passe oublié ?",
+    "login": "Se connecter",
+    "signup": "Créer un compte",
+    "reset_link_sent": "Lien de réinitialisation envoyé",
+    "name": "Nom",
+    "have_account": "Vous avez déjà un compte ?",
+    "no_account": "Pas encore de compte ?",
+
+    "lastName": "Nom",
+    "username": "Nom d'utilisateur",
+    "firstName": "Prénom",
+    "phone": "Téléphone",
+    "choose_country": "Choisissez un pays",
+    "choose_town": "Choisissez une ville",
+    "photo_url": "URL de la photo (optionnel)",
+    "signup_success": "Compte créé avec succès"
+  },
+  "gender": {
+    "male": "Homme",
+    "female": "Femme",
+    "other": "Autre"
+  },
+  "loading": "Chargement…",
+  "home": {
+    "title": "Bienvenue sur {{app}}",
+    "subtitle": "Votre passerelle vers les acteurs qui comptent."
+  },
+  "crud": {
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "delete": "Supprimer",
+    "confirm_delete": "Confirmer la suppression ?",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "search": "Rechercher..."
+  },
+  "country": {
+    "name": "Nom du pays",
+    "code": "Code du pays",
+    "title": "Gestion des pays"
+  },
+  "city": {
+    "name": "Nom de la ville",
+    "country": "Pays",
+    "title": "Gestion des villes"
+  },
+  "product": {
+    "name": "Nom du produit",
+    "price": "Prix",
+    "title": "Gestion des produits"
+  },
+  "language": {
+    "label": "Langue",
+    "fr": "Français",
+    "en": "Anglais"
+  },
+  "errors": {
+    "required": "Champ obligatoire",
+    "network": "Erreur réseau",
+    "unknown": "Erreur inconnue"
+  },
+  "mode": {
+    "light": "Passer en mode clair",
+    "dark": "Passer en mode sombre"
+  }
+}
