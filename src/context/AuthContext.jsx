@@ -76,12 +76,16 @@ export function AuthProvider({ children }) {
     toast.success('Email de réinitialisation envoyé')
   }
 
+
   const logout = async () => {
-    try { await authService.logout() } catch {}
-    localStorage.removeItem('accessToken')
-    setUser(null)
-    toast('Déconnecté')
-  }
+    try {
+      await authService.logout();
+    } catch {}
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    setUser(null);
+    toast('Déconnecté');
+  };
 
   return (
     <AuthContext.Provider value={{ user, loading, login, signup, forgotPassword, logout }}>

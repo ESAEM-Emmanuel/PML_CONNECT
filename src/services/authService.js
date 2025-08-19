@@ -15,5 +15,10 @@ export const authService = {
   signup: (payload) =>
     api.post('/users/register', payload),
   forgotPassword: (values) => axios.post(`${API_URL}/users/forgot-password`, values),
-  logout: () => axios.post(`${API_URL}/users/logout`)
+  logout: () =>
+  api.post(
+    `${API_URL}/users/logout`,
+    { token: localStorage.getItem('accessToken') },
+    { headers: { 'Content-Type': 'application/json' } }
+  ),
 }

@@ -11,6 +11,7 @@ import { townsService } from '../../services/townsService';
 import AutocompleteInput from '../../components/AutocompleteInput';
 import FormField from '../../components/FormField';
 import FilePreviewInput from '../../components/FilePreviewInput';
+import { uploadFilesService } from '../../services/uploadFilesService';
 
 export default function Signup() {
   const { t } = useTranslation();
@@ -108,9 +109,28 @@ export default function Signup() {
       toast.error(err?.response?.data?.message || err.message),
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     // Cloner pour éviter de modifier directement
-    const payload = { ...values };
+    let finalPhotoUrl = '';
+    if (photoFile) {
+      try {
+        const res = await uploadMutation.mutateAsync(photoFile);
+        finalPhotoUrl = res?.data?.result?.[0]?.url || '';
+      } catch (err) {
+        // <-- ici on log le vrai problème
+        console.error('Upload photo →', err.response?.data || err.message);
+        toast.error(
+          err.response?.data?.message || err.message || 'Erreur inconnue'
+        );
+        return;
+      }
+    }
+
+    // 2. préparation du payload
+    const payload = {
+      ...values,
+      ...(finalPhotoUrl && { photo: finalPhotoUrl }),
+    };
   
     // Nettoyage : supprimer les champs optionnels si vides
     if (!payload.username?.trim()) delete payload.username;
@@ -241,6 +261,7 @@ export default function Signup() {
               onFileChange={setPhotoFile}
             />
           </FormField>
+          <input type="hidden" {...register('photo')} />
 
           <button
             type="submit"
