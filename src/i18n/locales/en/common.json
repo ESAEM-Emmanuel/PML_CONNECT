@@ -27,10 +27,11 @@
     "lastName": "Last Name",
     "username": "Username",
     "firstName": "First Name",
-    "phone": "TélPhoneéphone",
+    "phone": "Phone",
     "choose_country": "Choose Country",
     "choose_town": "Choose Town",
-    "photo_url": "Photo (optionnel)"
+    "choose_gender": "Choose Gender",
+    "choose_photo": "Profile picture (optional)"
   },
   "gender": {
     "male": "Male",
@@ -73,7 +74,8 @@
   "errors": {
     "required": "Required field",
     "network": "Network error",
-    "unknown": "Unknown error"
+    "unknown": "Unknown error",
+    "password_mismatch": "Your passwords don't match."
   },
   "mode": {
     "light": "Switch to Light Mode",

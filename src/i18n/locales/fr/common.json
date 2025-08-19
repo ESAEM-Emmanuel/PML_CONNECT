@@ -30,13 +30,13 @@
     "phone": "Téléphone",
     "choose_country": "Choisissez un pays",
     "choose_town": "Choisissez une ville",
-    "photo_url": "URL de la photo (optionnel)",
+    "choose_gender": "Choisissez un genre",
+    "choose_photo": "Photo de profil (optionnel)",
     "signup_success": "Compte créé avec succès"
   },
   "gender": {
     "male": "Homme",
-    "female": "Femme",
-    "other": "Autre"
+    "female": "Femme"
   },
   "loading": "Chargement…",
   "home": {
@@ -75,7 +75,8 @@
   "errors": {
     "required": "Champ obligatoire",
     "network": "Erreur réseau",
-    "unknown": "Erreur inconnue"
+    "unknown": "Erreur inconnue",
+    "password_mismatch": "Vos mots de passe ne correspondent pas."
   },
   "mode": {
     "light": "Passer en mode clair",

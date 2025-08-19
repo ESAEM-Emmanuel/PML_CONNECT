@@ -22,7 +22,7 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}> {/* 2) Provider global */}
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} /> 3) devtools optionnel
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 )
