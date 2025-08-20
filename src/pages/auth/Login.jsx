@@ -2,9 +2,11 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
+import PasswordField from '../../components/PasswordField';
+
 
 export default function Login() {
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, formState: { errors } } = useForm()
   const { login } = useAuth()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -20,7 +22,14 @@ export default function Login() {
         <h2 className="card-title text-primary">{t('nav.login')}</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <input {...register('username')} placeholder={t('auth.username')} className="input input-bordered w-full" />
-          <input {...register('password')} type="password" placeholder={t('auth.password')} className="input input-bordered w-full" />
+          {/* <input {...register('password')} type="password" placeholder={t('auth.password')} className="input input-bordered w-full" /> */}
+          <PasswordField
+            register={register}
+            name="password"
+            placeholder={t('auth.password')}
+            required={t('errors.required')}
+            error={errors.password}
+          />
           <button className="btn btn-primary w-full">{t('auth.login')}</button>
         </form>
         <div className="flex justify-between mt-2 text-sm">

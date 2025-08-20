@@ -31,7 +31,10 @@
     "choose_country": "Choose Country",
     "choose_town": "Choose Town",
     "choose_gender": "Choose Gender",
-    "choose_photo": "Profile picture (optional)"
+    "choose_photo": "Profile picture (optional)",
+    "reset_title": "Reset Password",
+    "reset": "Reset",
+    "email_sent": "Mail sent successfully"
   },
   "gender": {
     "male": "Male",

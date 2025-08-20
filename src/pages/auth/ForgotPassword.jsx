@@ -8,13 +8,18 @@ export default function ForgotPassword() {
   const { t } = useTranslation()
 
   const onSubmit = async (values) => {
-    await forgotPassword(values)
-  }
+    try {
+      await forgotPassword(values);
+      toast.success(t('auth.email_sent'));
+    } catch (err) {
+      toast.error(err?.response?.data?.message || t('errors.generic'));
+    }
+  };
 
   return (
     <div className="max-w-md mx-auto mt-10 card bg-base-100 shadow transition-colors duration-300">
       <div className="card-body">
-        <h2 className="card-title text-primary">{t('auth.forgot_password')}</h2>
+        <h2 className="card-title text-primary">{t('auth.reset_title')}</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <input
             {...register('email', { required: true })}
@@ -22,7 +27,7 @@ export default function ForgotPassword() {
             className="input input-bordered w-full"
           />
           <button className="btn btn-primary w-full">
-            {t('auth.forgot_password')}
+            {t('auth.reset')}
           </button>
         </form>
       </div>

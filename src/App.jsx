@@ -1,73 +1,10 @@
-// import { Routes, Route, Navigate } from 'react-router-dom'
-// import Home from './pages/Home.jsx'
-// import Login from './pages/auth/Login.jsx'
-// import Signup from './pages/auth/Signup.jsx'
-// import ForgotPassword from './pages/auth/ForgotPassword.jsx'
-// import CountryList from './pages/countries/CountryList.jsx'
-// import CountryForm from './pages/countries/CountryForm.jsx'
-// import CityList from './pages/cities/CityList.jsx'
-// import CityForm from './pages/cities/CityForm.jsx'
-// import ProductList from './pages/products/ProductList.jsx'
-// import ProductForm from './pages/products/ProductForm.jsx'
-// import ProtectedRoute from './routes/ProtectedRoute.jsx'
-// import Navbar from './components/Navbar.jsx'
-// import Sidebar from './components/Sidebar.jsx' // Import du nouveau composant Sidebar
-// import { useAuth } from './context/AuthContext.jsx'
-
-// export default function App() {
-//   const { user } = useAuth()
-  
-//   // Condition pour afficher la barre latérale
-//   console.log(user);
-//   const isAdminOrStaff = user && (user.isAdmin || user.isStaff)
-
-//   return (
-//     <div className="min-h-screen bg-base-200">
-//       <Navbar />
-      
-//       {/* Conteneur principal qui gère la mise en page de la barre latérale et du contenu */}
-//       {/* 'flex-col' pour les petits écrans et 'lg:flex-row' pour les grands écrans */}
-//       <div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)]">
-        
-//         {/* Appel du composant Sidebar ici, rendu conditionnellement */}
-//         {isAdminOrStaff && <Sidebar />}
-
-//         {/* Conteneur du contenu principal - prend l'espace restant */}
-//         <div className="container mx-auto p-4 flex-1">
-//           <Routes>
-//             <Route path="/" element={<Home />} />
-//             <Route path="/login" element={<Login />} />
-//             <Route path="/signup" element={<Signup />} />
-//             <Route path="/forgot-password" element={<ForgotPassword />} />
-
-//             <Route element={<ProtectedRoute />}>
-//               <Route path="/countries" element={<CountryList />} />
-//               <Route path="/countries/new" element={<CountryForm />} />
-//               <Route path="/countries/:id" element={<CountryForm />} />
-
-//               <Route path="/cities" element={<CityList />} />
-//               <Route path="/cities/new" element={<CityForm />} />
-//               <Route path="/cities/:id" element={<CityForm />} />
-
-//               <Route path="/products" element={<ProductList />} />
-//               <Route path="/products/new" element={<ProductForm />} />
-//               <Route path="/products/:id" element={<ProductForm />} />
-//             </Route>
-
-//             <Route path="*" element={<Navigate to="/" />} />
-//           </Routes>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-// App.jsx
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import Home from './pages/Home.jsx';
 import Login from './pages/auth/Login.jsx';
 import Signup from './pages/auth/Signup.jsx';
 import ForgotPassword from './pages/auth/ForgotPassword.jsx';
+import ResetPassword from './pages/auth/ResetPassword.jsx';
 import CountryList from './pages/countries/CountryList.jsx';
 import CountryForm from './pages/countries/CountryForm.jsx';
 import CityList from './pages/cities/CityList.jsx';
@@ -155,7 +92,7 @@ export default function App() {
           <button
             className={`hidden lg:block fixed top-[calc(64px+1rem)] z-30
                         bg-base-100 border border-base-300 rounded-r-md p-2
-                        ${isDesktopSidebarOpen ? 'left-64' : 'left-0'}`}
+                        ${isDesktopSidebarOpen ? 'left-51' : 'left-0'}`}
             onClick={() => setIsDesktopSidebarOpen((o) => !o)}
             aria-label="Toggle sidebar"
           >
@@ -176,6 +113,8 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
 
                 <Route element={<ProtectedRoute />}>
                   <Route path="/countries" element={<CountryList />} />

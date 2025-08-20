@@ -149,9 +149,21 @@ export default function Navbar() {
                   </NavLink>
                 </li>
                 <div className="divider my-0"></div>
-                <li className="menu-title !px-4">
-                  <UserRound className="w-4 h-4" /> {user.firstName} {user.lastName}
+                <li className="menu-title !px-4 flex items-left">
+                  {user.photo ? (
+                    <img
+                      src={user.photo}
+                      alt="Avatar"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                  ) : (
+                    <UserRound className="w-4 h-4" />
+                  )}
+                  {user.firstName} {user.lastName}
                 </li>
+                {/* <li className="menu-title !px-4 flex items-center gap-2">
+                  {user.firstName} {user.lastName}
+                </li> */}
                 <li>
                   <NavLink to="/profile" onClick={handleNavLinkClick}>
                     <UserRound className="w-4 h-4" /> {t('nav.profile')}

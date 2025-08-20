@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './context/ThemeContext.jsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // <- ici
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'; //npm i -D @tanstack/react-query-devtools
+import ErrorBoundary from './components/ErrorBoundary';
 
 // 1) Créer le client
 const queryClient = new QueryClient({
@@ -26,8 +27,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <App />
-            <Toaster />
+            {/* <ErrorBoundary> */}
+              <App />
+              <Toaster />
+            {/* </ErrorBoundary> */}
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>

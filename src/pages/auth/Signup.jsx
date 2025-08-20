@@ -11,6 +11,7 @@ import { townsService } from '../../services/townsService';
 import AutocompleteInput from '../../components/AutocompleteInput';
 import FormField from '../../components/FormField';
 import FilePreviewInput from '../../components/FilePreviewInput';
+import PasswordField from '../../components/PasswordField';
 import { uploadFilesService } from '../../services/uploadFilesService';
 
 export default function Signup() {
@@ -233,24 +234,23 @@ export default function Signup() {
           </FormField>
 
           <FormField required error={errors.password}>
-            <input
-              {...register('password', { required: t('errors.required') })}
-              type="password"
+            <PasswordField
+              register={register}
+              name="password"
               placeholder={t('auth.password')}
-              className="input input-bordered w-full"
+              required={t('errors.required')}
+              error={errors.password}
             />
           </FormField>
 
           <FormField required error={errors.passwordConfirm}>
-            <input
-              {...register('passwordConfirm', {
-                required: t('errors.required'),
-                validate: (value) =>
-                  value === watch('password') || t('errors.password_mismatch'),
-              })}
-              type="password"
+            <PasswordField
+              register={register}
+              name="passwordConfirm"
               placeholder={t('auth.password_confirm')}
-              className="input input-bordered w-full"
+              required={t('errors.required')}
+              error={errors.passwordConfirm}
+              validate={(value) => value === watch('password') || t('errors.password_mismatch')}
             />
           </FormField>
 

@@ -23,7 +23,6 @@
     "name": "Nom",
     "have_account": "Vous avez déjà un compte ?",
     "no_account": "Pas encore de compte ?",
-
     "lastName": "Nom",
     "username": "Nom d'utilisateur",
     "firstName": "Prénom",
@@ -32,7 +31,10 @@
     "choose_town": "Choisissez une ville",
     "choose_gender": "Choisissez un genre",
     "choose_photo": "Photo de profil (optionnel)",
-    "signup_success": "Compte créé avec succès"
+    "signup_success": "Compte créé avec succès",
+    "reset_title": "Réinitialiser Mot De Passe",
+    "reset": "Réinitialiser",
+    "email_sent": "Mail envoyé avec succès"
   },
   "gender": {
     "male": "Homme",
