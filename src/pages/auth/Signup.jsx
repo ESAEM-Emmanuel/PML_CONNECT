@@ -31,7 +31,7 @@ export default function Signup() {
   -------------------------------------------------- */
   const { data: resCountries } = useQuery({
     queryKey: ['countries', { isActive: true, limit: -1 }],
-    queryFn: () => countriesService.getCountries({ isActive: true, limit: -1 }),
+    queryFn: () => countriesService.getAll({ isActive: true, limit: -1 }),
   });
   const countries = resCountries?.data?.result?.data || [];
 
@@ -53,7 +53,7 @@ export default function Signup() {
       limit: -1,
     }],
     queryFn: () =>
-      townsService.getTowns({
+      townsService.getAll({
         countryId: selectedCountryId,
         isActive: true,
         limit: -1,

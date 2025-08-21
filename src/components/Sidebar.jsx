@@ -13,7 +13,7 @@ export default function Sidebar() {
         </li>
         <li>
           <NavLink
-            to="/countries"
+            to="/countrie"
             className={({ isActive }) =>
               `flex items-center gap-2 ${isActive ? 'active' : ''}`
             }

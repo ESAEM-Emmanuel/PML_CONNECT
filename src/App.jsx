@@ -5,8 +5,7 @@ import Login from './pages/auth/Login.jsx';
 import Signup from './pages/auth/Signup.jsx';
 import ForgotPassword from './pages/auth/ForgotPassword.jsx';
 import ResetPassword from './pages/auth/ResetPassword.jsx';
-import CountryList from './pages/countries/CountryList.jsx';
-import CountryForm from './pages/countries/CountryForm.jsx';
+import CountriesPage from './pages/CountriesPage.jsx';
 import CityList from './pages/cities/CityList.jsx';
 import CityForm from './pages/cities/CityForm.jsx';
 import ProductList from './pages/products/ProductList.jsx';
@@ -113,13 +112,10 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
-                {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
 
                 <Route element={<ProtectedRoute />}>
-                  <Route path="/countries" element={<CountryList />} />
-                  <Route path="/countries/new" element={<CountryForm />} />
-                  <Route path="/countries/:id" element={<CountryForm />} />
+                  <Route path="/countries" element={<CountriesPage />} />
 
                   <Route path="/cities" element={<CityList />} />
                   <Route path="/cities/new" element={<CityForm />} />

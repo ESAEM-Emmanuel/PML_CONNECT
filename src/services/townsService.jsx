@@ -4,28 +4,24 @@ import API from './api'; // <= ton intercepteur
 const BASE = '/towns'; // on peut factoriser
 
 export const townsService = {
-  /* CREATE ---------------------------------------------------------- */
-  createTown: (payload) =>
-    API.post(`${BASE}/create`, payload),
+  // READ (lecture paginée avec filtres)
+  getAll: (params) => API.get(BASE, { params }),
 
-  /* READ ------------------------------------------------------------- */
-  getTowns: (params = {}) =>
-    API.get(BASE, { params }),
+  //Lecture d'un vile et de ses détail
+  getCountryById: (id) => API.get(`${BASE}/${id}`),
+    
+  // CREATE
+  create: (payload) => API.post(`${BASE}/create`, payload),
 
-  getTownById: (id) =>
-    API.get(`${BASE}/${id}`),
+  // UPDATE
+  update: (id, payload) => API.put(`${BASE}/${id}`, payload),
 
-  /* UPDATE ----------------------------------------------------------- */
-  updateTown: (id, payload) =>
-    API.put(`${BASE}/${id}`, payload),
+  // DELETE (soft delete)
+  delete: (id) => API.delete(`${BASE}/${id}`),
 
-  /* DELETE ----------------------------------------------------------- */
-  deleteTown: (id) =>
-    API.delete(`${BASE}/${id}`),
-
-  /* PATCH (soft delete / restore) ------------------------------------ */
-  patchTown: (id, payload) =>
-    API.patch(`${BASE}/${id}`, payload)
+  // RESTORE (patch)
+  restore: (id, payload) => API.patch(`${BASE}/${id}`, payload),
+  // NOTE : Si vous avez un endpoint pour un pays unique,
 };
 
 export default townsService;

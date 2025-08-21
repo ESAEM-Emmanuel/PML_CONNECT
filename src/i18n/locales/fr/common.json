@@ -49,10 +49,37 @@
     "create": "Créer",
     "update": "Mettre à jour",
     "delete": "Supprimer",
+    "restore": "Restorer",
     "confirm_delete": "Confirmer la suppression ?",
+    "confirm_restore": "Confirmer la restorqtion ?",
     "save": "Enregistrer",
     "cancel": "Annuler",
-    "search": "Rechercher..."
+    "search": "Rechercher...",
+    "edit": "Modifier",
+    "view": "Détails",
+    "active": "Actifs",
+    "actions": "Actions",
+    "reference_number": "N° reference",
+    "name": "Nom",
+    "code": "Code",
+    "label": "Titre",
+    "price": "Prix",
+    "city": "Ville",
+
+    "status": "Etat",
+    "creator": "Créer par ",
+    "updator": "Modifié par",
+    "created_at": "Créer le",
+    "updated_at": "Dernière modification",
+    "total_elements": "Nonbre total",
+    "no_elements": "Pas d'éléments",
+
+    "loading": "Chargement…"
+  },
+  "modul_title": {
+    "country": "Gestion des pays",
+    "city": "Gestion des villes",
+    "product": "Gestion des produits"
   },
   "country": {
     "name": "Nom du pays",

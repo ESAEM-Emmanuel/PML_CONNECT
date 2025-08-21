@@ -27,10 +27,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            {/* <ErrorBoundary> */}
+            <ErrorBoundary>
               <App />
               <Toaster />
-            {/* </ErrorBoundary> */}
+            </ErrorBoundary>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
