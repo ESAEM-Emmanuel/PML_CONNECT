@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { SlidersHorizontal } from 'lucide-react'; // Importation de l'icône
 
 // HOOKS PERSONNALISÉS
 import { useModuleFilters } from '../hooks/useModuleFilters';
@@ -9,12 +10,13 @@ import { useCrudPaginated } from '../hooks/useCrudPaginated';
 
 // SERVICE API
 import { countriesService } from '../services/countriesService';
+import { usersService } from '../services/usersService';
 
 // COMPOSANTS RÉUTILISABLES
 import CrudModal from '../components/CrudModal';
 import PageContence from '../components/PageContence';
 import ExportToExcel from '../components/ExportToExcel';
-import AdvancedFilter from '../components/AdvancedFilter';
+import AdvancedFilterModal from '../components/AdvancedFilterModal';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -85,8 +87,16 @@ export default function CountriesPage() {
   const [modal, setModal] = useState({ open: false, mode: 'create', item: null, id: null });
   const [selectedCountryId, setSelectedCountryId] = useState(null);
   const [modalKey, setModalKey] = useState(0);
+  const [showAdvancedFilterModal, setShowAdvancedFilterModal] = useState(false);
 
-  // 6) RÉCUPÉRATION DES DÉTAILS D'UN PAYS POUR LA VUE "VIEW"
+  // 6) RÉCUPÉRATION DES DONNÉES UTILISATEUR POUR L'AUTOCOMPLÉTION
+  const { data: usersData, isLoading: isUsersLoading } = useQuery({
+    queryKey: ['usersList'],
+    queryFn: () => usersService.getAll(),
+  });
+  const users = usersData?.data?.result?.data?.map(user => ({ id: user.id, name: user.username })) || [];
+
+  // RÉCUPÉRATION DES DÉTAILS D'UN PAYS POUR LA VUE "VIEW"
   const { data: countryDetails, isLoading: isLoadingDetails } = useQuery({
     queryKey: ['country', selectedCountryId],
     queryFn: () => countriesService.getCountryById(selectedCountryId),
@@ -129,7 +139,7 @@ export default function CountriesPage() {
 
   const handleRestore = useCallback((item) => restore({ id: item.id }), [restore]);
 
-  // 8) CONFIGURATION DES FILTRES AVANCÉS
+  // 8) CONFIGURATION DES CHAMPS AVANCÉS
   const filterFields = useMemo(
     () => [
       { name: 'search', label: t('crud.search'), type: 'text' },
@@ -141,6 +151,8 @@ export default function CountriesPage() {
       { name: 'createdAtEnd', label: t('crud.created_at_end'), type: 'date' },
       { name: 'updatedAtStart', label: t('crud.updated_at_start'), type: 'date' },
       { name: 'updatedAtEnd', label: t('crud.updated_at_end'), type: 'date' },
+      { name: 'creatorId', label: t('crud.creator'), type: 'autocomplete' },
+      { name: 'updatorId', label: t('crud.updator'), type: 'autocomplete' },
       {
         name: 'sortBy',
         label: t('crud.sort_by'),
@@ -209,7 +221,7 @@ export default function CountriesPage() {
     }
   }, [countryDetails, modal.mode]);
 
-  if (isLoading) return <p className="text-center mt-10">{t('loading')}</p>;
+  if (isLoading || isUsersLoading || isLoadingDetails) return <p className="text-center mt-10">{t('loading')}</p>;
 
   return (
     <PageContence>
@@ -232,21 +244,20 @@ export default function CountriesPage() {
           />
 
           <label className="label cursor-pointer flex gap-2">
-            <span className="label-text">{t('crud.active_only')}</span>
+            <span className="label-text">{t('crud.is_active')}</span>
             <input
               type="checkbox"
               className="toggle"
-              checked={searchParams.get('isActive') !== 'false'}
+              checked={searchParams.get('isActive') === 'true'}
               onChange={handleIsActiveToggle}
             />
           </label>
 
-          <AdvancedFilter
-            onApply={handleApplyFilters}
-            onReset={handleResetFilters}
-            filterFields={filterFields}
-            initialFilters={Object.fromEntries(searchParams.entries())}
-          />
+          {/* Bouton pour ouvrir la modale des filtres avancés */}
+          <button className="btn btn-ghost" onClick={() => setShowAdvancedFilterModal(true)}>
+            <SlidersHorizontal size={24} />
+            {t('crud.advanced_filters')}
+          </button>
 
           <ExportToExcel data={excelData} filename={excelFilename} headers={excelHeaders} />
         </div>
@@ -308,7 +319,7 @@ export default function CountriesPage() {
           </div>
         )}
 
-        {/* Composant de modale */}
+        {/* Composant de modale CRUD */}
         <CrudModal
           key={modalKey}
           isOpen={modal.open}
@@ -320,6 +331,17 @@ export default function CountriesPage() {
           onSubmit={handleSave}
           mode={modal.mode}
           isLoading={isLoadingDetails}
+        />
+
+        {/* Modale des filtres avancés */}
+        <AdvancedFilterModal
+          isOpen={showAdvancedFilterModal}
+          onClose={() => setShowAdvancedFilterModal(false)}
+          onApply={handleApplyFilters}
+          onReset={handleResetFilters}
+          filterFields={filterFields}
+          initialFilters={Object.fromEntries(searchParams.entries())}
+          users={users}
         />
       </div>
     </PageContence>

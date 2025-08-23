@@ -2,9 +2,12 @@
 import React, { useMemo } from 'react';
 import { CSVLink } from 'react-csv';
 import { Download } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+
 
 const ExportToExcel = ({ data, filename, headers, children }) => {
   // Utilise useMemo pour mémoriser les en-têtes calculés si 'headers' n'est pas fourni
+  const { t } = useTranslation();
   const csvHeaders = useMemo(() => {
     if (headers && headers.length > 0) {
       return headers;
@@ -32,6 +35,7 @@ const ExportToExcel = ({ data, filename, headers, children }) => {
       className="btn btn-secondary"
       target="_blank"
     >
+      {t('crud.dawnload')}
       {children || <Download size={24} />}
     </CSVLink>
   );

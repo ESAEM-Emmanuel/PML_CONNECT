@@ -72,6 +72,22 @@
     "total_elements": "Total number",
     "no_elements": "No elements",
 
+    "created_at_start": "Upper born cration",
+    "created_at_end": "Lower born cration",
+    "updatedAtStart": "Upper born upddated",
+    "updated_at_end": "Lower born upddated",
+    "sort_by": "Sort by",
+    "order": "Order to",
+    "asc": "creasing",
+    "desc": "Decreasing",
+    "is_active": "Is actif ?",
+    "advanced_filters": "Filter",
+    "reset": "Reset",
+    "apply": "Apply",
+    "select_option": "Select option",
+    "limit": "Max data quantity",
+    "dawnload": "Dawnload",
+
 
     "loading": "Loading…"
   },
@@ -127,6 +143,12 @@
       "desc": "Our platform provides you with modern tools: smart matching, collaborative spaces, and knowledge sharing. Everything you need to accelerate innovation and support your growth.",
       "image": "https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg"
     }
+  },
+
+  "sidebar": {
+    "countries": "Countries",
+    "cities": "Cities",
+    "products": "Products"
   },
 
   "language": {

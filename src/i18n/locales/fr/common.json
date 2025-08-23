@@ -66,7 +66,6 @@
     "label": "Titre",
     "price": "Prix",
     "city": "Ville",
-
     "status": "Etat",
     "creator": "Créer par ",
     "updator": "Modifié par",
@@ -74,6 +73,22 @@
     "updated_at": "Dernière modification",
     "total_elements": "Nonbre total",
     "no_elements": "Pas d'éléments",
+
+    "created_at_start": "Borne sup creation",
+    "created_at_end": "Borne inf creation",
+    "updatedAtStart": "Borne sup maj",
+    "updated_at_end": "Borne inf maj",
+    "sort_by": "Filter par",
+    "order": "Ordonner de manière",
+    "asc": "Croissante",
+    "desc": "Décroissante",
+    "is_active": "Actif ?",
+    "advanced_filters": "Filtre",
+    "reset": "Réinitialiser",
+    "apply": "Appliquer",
+    "select_option": "Sélectionnez une option",
+    "limit": "Quantité max de donnée",
+    "dawnload": "Télécharger",
 
     "loading": "Chargement…"
   },
@@ -127,6 +142,12 @@
       "desc": "Notre plateforme met à votre disposition des outils modernes : matching intelligent, espaces collaboratifs et partage d’expertise. Tout ce qu’il faut pour accélérer l’innovation et soutenir votre croissance.",
       "image": "https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg"
     }
+  },
+  
+  "sidebar": {
+    "countries": "Pays",
+    "cities": "villes",
+    "products": "Produits"
   },
   
   "language": {
