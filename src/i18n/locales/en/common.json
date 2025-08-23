@@ -43,7 +43,8 @@
   "loading": "Loading…",
   "home": {
     "title": "Welcome to {{app}}",
-    "subtitle": "Your gateway to the people who matter."
+    "subtitle": "Your gateway to the people who matter.",
+    "product_title": "Our products"
   },
   "crud": {
     "create": "Create",
@@ -63,7 +64,6 @@
     "name": "Name",
     "code": "Code",
     "city": "Town",
-
     "status": "Status",
     "creator": "Created by ",
     "updator": "Modified by",
@@ -76,6 +76,7 @@
     "loading": "Loading…"
   },
   "modul_title": {
+    "home": "Home",
     "country": "Countries management",
     "city": "Cities management",
     "product": "Products management"
@@ -97,7 +98,36 @@
     "price": "Price",
     "title": "Products management"
   },
-
+  "caroussel": {
+    "1": {
+      "titleTop": "Welcome to PML_CONNECT",
+      "titleMain": "Your gateway to the key players.",
+      "buttonText": "Explore business sectors",
+      "desc": "More than just a platform: it is the crossroads where ideas meet opportunities. Designed for economic actors, it enables strategic connections between companies, startups, and decision-makers. With features such as smart matching, virtual events, and thematic discussion spaces, our platform accelerates your projects and places you at the heart of the economic ecosystem.",
+      "image": "https://images.pexels.com/photos/5699318/pexels-photo-5699318.jpeg"
+    },
+    "2": {
+      "titleTop": "Grow your network",
+      "titleMain": "Connections that make a difference.",
+      "buttonText": "Join the community",
+      "desc": "Access a diverse network of professionals and entrepreneurs. Meet strategic partners, share experiences, and build long-lasting relationships that drive your projects forward.",
+      "image": "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg"
+    },
+    "3": {
+      "titleTop": "Events & Opportunities",
+      "titleMain": "Be at the heart of the action.",
+      "buttonText": "Discover events",
+      "desc": "Take part in virtual and physical events designed to boost your opportunities. Workshops, conferences, and thematic discussions: stay informed and engaged with your sector’s latest trends.",
+      "image": "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg"
+    },
+    "4": {
+      "titleTop": "Innovation & Growth",
+      "titleMain": "A springboard for your projects.",
+      "buttonText": "Start now",
+      "desc": "Our platform provides you with modern tools: smart matching, collaborative spaces, and knowledge sharing. Everything you need to accelerate innovation and support your growth.",
+      "image": "https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg"
+    }
+  },
 
   "language": {
     "label": "Language",

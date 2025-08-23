@@ -1,57 +1,94 @@
-// src/hooks/useCrudPaginated.js
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export function useCrudPaginated(service, key, filters = {}) {
   const queryClient = useQueryClient();
-  const { search, isActive, page, limit } = filters;
+  const { t } = useTranslation();
 
-  /* -------------------------------------------------
-     Construction des paramètres :
-     on retire les clés vides ou non définies
-  -------------------------------------------------- */
+  const { search, isActive, page, limit, ...restOfFilters } = filters;
+
   const params = {
-    // search non envoyé si vide ou undefined
     ...(search && search.trim() && { search }),
-    // isActive envoyé seulement si fourni
-    ...(isActive !== undefined && { isActive }),
-    // page et limit toujours envoyés (valeurs par défaut 1 / 10)
-    page,
-    limit,
+    ...(isActive !== undefined && { isActive: isActive === 'true' }),
+    page: Number(page) || 1,
+    limit: Number(limit) || 10,
+    ...restOfFilters,
   };
 
-  /* -------------------------------------------------
-     Requête paginée + filtres
-  -------------------------------------------------- */
-  const { data, isLoading, refetch } = useQuery({
+  // -------------------------------------------------
+  // Requête paginée + filtres
+  // -------------------------------------------------
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: [key, params],
-    queryFn: () => service.getAll(params),
+    queryFn: () => {
+      // console.log('Fetching', key, params);
+      return service.getAll(params);
+    },
+    staleTime: 60 * 1000,
+    keepPreviousData: true, // empêche le « flash » entre deux pages
   });
 
-  /* -------------------------------------------------
-     Extraction des données
-  -------------------------------------------------- */
-  console.log(data);
-//   const items        = data?.result?.data || [];
-//   const pagination   = data?.result?.pagination || {};
-const items = data?.data?.result?.data || [];
-const pagination = data?.data?.result?.pagination || {};
+  // -------------------------------------------------
+  // Mapping standardisé
+  // -------------------------------------------------
+  const items = data?.data?.result?.data || [];
+  const backendPagination = data?.data?.result?.pagination || {};
+  const pagination = {
+    currentPage: backendPagination.page || backendPagination.currentPage || 1,
+    totalPages: backendPagination.totalPages || 1,
+    totalItems: backendPagination.totalItems || 0,
+  };
 
-  /* -------------------------------------------------
-     Mutations CRUD
-  -------------------------------------------------- */
-  const createMutation = useMutation({ mutationFn: service.create, onSuccess: () => queryClient.invalidateQueries([key]) });
-  const updateMutation = useMutation({ mutationFn: ({ id, payload }) => service.update(id, payload), onSuccess: () => queryClient.invalidateQueries([key]) });
-  const deleteMutation = useMutation({ mutationFn: service.delete, onSuccess: () => queryClient.invalidateQueries([key]) });
-  const restoreMutation = useMutation({ mutationFn: ({ id }) => service.restore(id, {}), onSuccess: () => queryClient.invalidateQueries([key]) });
+  // -------------------------------------------------
+  // Mutations CRUD
+  // -------------------------------------------------
+  const createMutation = useMutation({
+    mutationFn: service.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [key] });
+      toast.success(t('crud.create_success'));
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.message || t('crud.create_error'));
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, payload }) => service.update(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [key] });
+      toast.success(t('crud.update_success'));
+    },
+    onError: (err) => toast.error(err.response?.data?.message || t('crud.update_error')),
+  });
+
+  const softDeleteMutation = useMutation({
+    mutationFn: (id) => service.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [key] });
+      toast.success(t('crud.delete_success'));
+    },
+    onError: (err) => toast.error(err.response?.data?.message || t('crud.delete_error')),
+  });
+
+  const restoreMutation = useMutation({
+    mutationFn: ({ id }) => service.restore(id, {}),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [key] });
+      toast.success(t('crud.restore_success'));
+    },
+    onError: (err) => toast.error(err.response?.data?.message || t('crud.restore_error')),
+  });
 
   return {
     items,
     pagination,
     isLoading,
+    isFetching, // utile pour un loader léger pendant le changement de page
     create: createMutation.mutate,
     update: updateMutation.mutate,
-    delete: deleteMutation.mutate,
+    softDelete: softDeleteMutation.mutate,
     restore: restoreMutation.mutate,
-    refetch,
   };
 }

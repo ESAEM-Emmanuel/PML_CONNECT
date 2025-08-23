@@ -43,7 +43,8 @@
   "loading": "Chargement…",
   "home": {
     "title": "Bienvenue sur {{app}}",
-    "subtitle": "Votre passerelle vers les acteurs qui comptent."
+    "subtitle": "Votre passerelle vers les acteurs qui comptent.",
+    "product_title": "Nos Produits"
   },
   "crud": {
     "create": "Créer",
@@ -77,6 +78,7 @@
     "loading": "Chargement…"
   },
   "modul_title": {
+    "home": "Accueil",
     "country": "Gestion des pays",
     "city": "Gestion des villes",
     "product": "Gestion des produits"
@@ -96,6 +98,37 @@
     "price": "Prix",
     "title": "Gestion des produits"
   },
+  "caroussel": {
+    "1": {
+      "titleTop": "Bienvenue sur PML_CONNECT",
+      "titleMain": "Votre passerelle vers les acteurs qui comptent.",
+      "buttonText": "Explorer des secteurs d'activié",
+      "desc": "Bien plus qu'une plateforme : c'est le carrefour où les idées rencontrent les opportunités. Conçue pour les acteurs du monde économique, il facilite les connexions stratégiques entre entreprises, startups et décideurs. Avec des fonctionnalités comme le matching intelligent, les événements virtuels et les espaces de discussion thématiques, notre plateforme accélère vos projets et vous propulse au cœur de l'écosystème économique.",
+      "image": "https://images.pexels.com/photos/5699318/pexels-photo-5699318.jpeg"
+    },
+    "2": {
+      "titleTop": "Développez votre réseau",
+      "titleMain": "Des connexions qui font la différence.",
+      "buttonText": "Rejoindre la communauté",
+      "desc": "Accédez à un réseau diversifié de professionnels et d’entrepreneurs. Rencontrez des partenaires stratégiques, échangez des expériences et construisez des relations durables qui stimulent vos projets.",
+      "image": "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg"
+    },
+    "3": {
+      "titleTop": "Événements & Opportunités",
+      "titleMain": "Soyez au cœur de l'action.",
+      "buttonText": "Découvrir les événements",
+      "desc": "Participez à des événements virtuels et physiques conçus pour booster vos opportunités. Ateliers, conférences et discussions thématiques : restez informé et impliqué dans les tendances de votre secteur.",
+      "image": "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg"
+    },
+    "4": {
+      "titleTop": "Innovation & Croissance",
+      "titleMain": "Un tremplin pour vos projets.",
+      "buttonText": "Commencer dès maintenant",
+      "desc": "Notre plateforme met à votre disposition des outils modernes : matching intelligent, espaces collaboratifs et partage d’expertise. Tout ce qu’il faut pour accélérer l’innovation et soutenir votre croissance.",
+      "image": "https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg"
+    }
+  },
+  
   "language": {
     "label": "Langue",
     "fr": "Français",

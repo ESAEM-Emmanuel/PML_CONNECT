@@ -27,6 +27,7 @@ export default function Login() {
             register={register}
             name="password"
             placeholder={t('auth.password')}
+            autocomplete="current-password"
             required={t('errors.required')}
             error={errors.password}
           />
