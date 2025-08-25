@@ -74,21 +74,23 @@
     "total_elements": "Nonbre total",
     "no_elements": "Pas d'éléments",
 
-    "created_at_start": "Borne sup creation",
-    "created_at_end": "Borne inf creation",
-    "updatedAtStart": "Borne sup maj",
-    "updated_at_end": "Borne inf maj",
+    "created_at_start": "intervalle sup création",
+    "created_at_end": "intervalle inf création",
+    "updatedAtStart": "intervalle sup maj",
+    "updated_at_end": "intervalle inf maj",
     "sort_by": "Filter par",
-    "order": "Ordonner de manière",
-    "asc": "Croissante",
+    "order": "ranger de manière",
+    "asc": "Croissante ",
     "desc": "Décroissante",
     "is_active": "Actif ?",
     "advanced_filters": "Filtre",
     "reset": "Réinitialiser",
     "apply": "Appliquer",
     "select_option": "Sélectionnez une option",
-    "limit": "Quantité max de donnée",
-    "dawnload": "Télécharger",
+    "limit": "Quantité max de données",
+    "download": "Télécharger",
+    "page_of_total": "Page {{page}} sur {{total}}",
+    "total_items": "Nombre total : {{count}}",
 
     "loading": "Chargement…"
   },
@@ -145,6 +147,8 @@
   },
   
   "sidebar": {
+    "menu": "Menu latéral",
+    "dashboard": "Tableau de bord",
     "countries": "Pays",
     "cities": "villes",
     "products": "Produits"

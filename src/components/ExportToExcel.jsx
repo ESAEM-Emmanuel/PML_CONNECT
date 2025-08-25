@@ -35,7 +35,7 @@ const ExportToExcel = ({ data, filename, headers, children }) => {
       className="btn btn-secondary"
       target="_blank"
     >
-      {t('crud.dawnload')}
+      {t('crud.download')}
       {children || <Download size={24} />}
     </CSVLink>
   );

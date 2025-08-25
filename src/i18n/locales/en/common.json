@@ -72,21 +72,23 @@
     "total_elements": "Total number",
     "no_elements": "No elements",
 
-    "created_at_start": "Upper born cration",
-    "created_at_end": "Lower born cration",
-    "updatedAtStart": "Upper born upddated",
-    "updated_at_end": "Lower born upddated",
+    "created_at_start": "upper interval creation",
+    "created_at_end": "Lower creation interval",
+    "updatedAtStart": "Upper update interval",
+    "updated_at_end": "Lower update interval",
     "sort_by": "Sort by",
-    "order": "Order to",
-    "asc": "creasing",
-    "desc": "Decreasing",
+    "order": "Arrange in order",
+    "asc": "Ascending ",
+    "desc": "Descending ",
     "is_active": "Is actif ?",
     "advanced_filters": "Filter",
     "reset": "Reset",
     "apply": "Apply",
     "select_option": "Select option",
     "limit": "Max data quantity",
-    "dawnload": "Dawnload",
+    "download": "Download",
+    "page_of_total": "Page {{page}} of {{total}}",
+    "total_items": "Total number : {{count}}",
 
 
     "loading": "Loading…"
@@ -146,6 +148,8 @@
   },
 
   "sidebar": {
+    "menu": "Side menu",
+    "dashboard": "Dashboard",
     "countries": "Countries",
     "cities": "Cities",
     "products": "Products"

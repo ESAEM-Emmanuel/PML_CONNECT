@@ -37,7 +37,7 @@ export function useCrudPaginated(service, key, filters = {}) {
   const pagination = {
     currentPage: backendPagination.page || backendPagination.currentPage || 1,
     totalPages: backendPagination.totalPages || 1,
-    totalItems: backendPagination.totalItems || 0,
+    totalItems: backendPagination.total || 0,
   };
 
   // -------------------------------------------------
