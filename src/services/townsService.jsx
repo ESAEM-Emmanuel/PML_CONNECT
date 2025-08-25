@@ -8,7 +8,7 @@ export const townsService = {
   getAll: (params) => API.get(BASE, { params }),
 
   //Lecture d'un vile et de ses détail
-  getCountryById: (id) => API.get(`${BASE}/${id}`),
+  getById: (id) => API.get(`${BASE}/${id}`),
     
   // CREATE
   create: (payload) => API.post(`${BASE}/create`, payload),

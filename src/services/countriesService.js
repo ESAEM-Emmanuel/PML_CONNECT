@@ -8,7 +8,7 @@ export const countriesService = {
   getAll: (params) => API.get(BASE, { params }),
   
   // READ (lecture par ID)
-  getCountryById: (id) => API.get(`${BASE}/${id}`),
+  getById: (id) => API.get(`${BASE}/${id}`),
 
   // CREATE
   create: (payload) => API.post(`${BASE}/create`, payload),

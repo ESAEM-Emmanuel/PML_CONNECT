@@ -52,7 +52,7 @@ export default function Navbar() {
             </li>
             {user && (
               <>
-                <li>
+                {/* <li>
                   <NavLink to="/countries" className="gap-2">
                     <Globe className="w-4 h-4" />
                     {t('nav.countries')}
@@ -63,7 +63,7 @@ export default function Navbar() {
                     <ShoppingBasket className="w-4 h-4" />
                     {t('nav.products')}
                   </NavLink>
-                </li>
+                </li> */}
               </>
             )}
           </ul>

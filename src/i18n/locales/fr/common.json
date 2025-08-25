@@ -64,6 +64,7 @@
     "name": "Nom",
     "code": "Code",
     "label": "Titre",
+    "country": "Pays",
     "price": "Prix",
     "city": "Ville",
     "status": "Etat",
@@ -73,6 +74,14 @@
     "updated_at": "Dernière modification",
     "total_elements": "Nonbre total",
     "no_elements": "Pas d'éléments",
+    "create_success": "Crée avec succes!",
+    "create_error": "Échec de création!",
+    "update_success": "Mise à jour avec succes!",
+    "update_error": "Échec de la Mise à jour!",
+    "delete_success": "Supprimé !",
+    "delete_error": "Échec de la suppression!",
+    "restore_success": "Restoré!",
+    "restore_error": "Échec de la restoration!",
 
     "created_at_start": "intervalle sup création",
     "created_at_end": "intervalle inf création",
@@ -96,6 +105,7 @@
   },
   "modul_title": {
     "home": "Accueil",
+    "dashboard": "Tableau de bord",
     "country": "Gestion des pays",
     "city": "Gestion des villes",
     "product": "Gestion des produits"
@@ -152,6 +162,20 @@
     "countries": "Pays",
     "cities": "villes",
     "products": "Produits"
+  },
+
+  "dashboard": {
+    "total_countries": "Total des pays",
+    "active_countries": "Pays actifs",
+    "total_cities": "Total des villes",
+    "total_users": "Total des utilisateurs",
+    "countries_by_month": "Pays créés par mois",
+    "active_users_trend": "Tendance des utilisateurs actifs",
+    "recent_countries": "Derniers pays créés",
+    "graph_placeholder": "Les graphiques s'afficheront ici",
+    "countries_created": "Pays créés",
+    "cities_by_quarter": "Villes créées par trimestre",
+    "cities_created": "Villes créées"
   },
   
   "language": {

@@ -64,6 +64,7 @@
     "name": "Name",
     "code": "Code",
     "city": "Town",
+    "country": "Country",
     "status": "Status",
     "creator": "Created by ",
     "updator": "Modified by",
@@ -71,6 +72,14 @@
     "updated_at": "Last modification",
     "total_elements": "Total number",
     "no_elements": "No elements",
+    "create_success": "Successfully created!",
+    "create_error": "Creation failure!",
+    "update_success": "Successfully updated!",
+    "update_error": "Update failed!",
+    "delete_success": "Deleted!",
+    "delete_error": "Deletion failed!",
+    "restore_success": "Restored!",
+    "restore_error": "Restoration failure!",
 
     "created_at_start": "upper interval creation",
     "created_at_end": "Lower creation interval",
@@ -95,6 +104,7 @@
   },
   "modul_title": {
     "home": "Home",
+    "dashboard": "Dashboard",
     "country": "Countries management",
     "city": "Cities management",
     "product": "Products management"
@@ -153,6 +163,20 @@
     "countries": "Countries",
     "cities": "Cities",
     "products": "Products"
+  },
+
+  "dashboard": {
+    "total_countries": "Total countries",
+    "active_countries": "Active countries",
+    "total_cities": "Total cities",
+    "total_users": "Total users",
+    "countries_by_month": "Countries created per month",
+    "active_users_trend": "Active user trends",
+    "recent_countries": "Latest countries created",
+    "graph_placeholder": "Graphics will be displayed here",
+    "countries_created": "Countries created",
+    "cities_by_quarter": "Cities created per quarter",
+    "cities_created": "Cities created"
   },
 
   "language": {

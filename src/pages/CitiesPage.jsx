@@ -1,4 +1,4 @@
-// src/pages/CountriesPage.jsx
+// src/pages/CitiesPage.jsx
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ import { useCrudPaginated } from '../hooks/useCrudPaginated';
 import { useAuth } from '../context/AuthContext';
 
 // SERVICE API
+import { townsService } from '../services/townsService';
 import { countriesService } from '../services/countriesService';
 import { usersService } from '../services/usersService';
 
@@ -24,21 +25,52 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function CountriesPage() {
   const { t } = useTranslation();
   const { userRole } = useAuth();
+   // RÉCUPÉRATION DES PAYS POUR L'AUTOCOMPLÉTION
+   // Pays
+  const { data: resCountries } = useQuery({
+    queryKey: ['countriesList'],
+    queryFn: () => countriesService.getAll({ isActive: true, limit: -1 }),
+  });
+  const countries = useMemo(() => resCountries?.data?.result?.data || [], [resCountries]);
+  const countryOptions = useMemo(() => countries.map(country => ({ id: country.id, name: country.name })), [countries]);
 
-  // DÉFINITION DES CHAMPS POUR LA MODALE DE CRÉATION/ÉDITION
+  // Utilisateurs
+  const { data: usersData, isLoading: isUsersLoading } = useQuery({
+    queryKey: ['usersList'],
+    queryFn: () => usersService.getAll({ isActive: true, limit: -1 }),
+  });
+  const users = usersData?.data?.result?.data?.map(user => ({ id: user.id, name: user.username })) || [];
+  const userOptions = useMemo(() => usersData?.data?.result?.data?.map(user => ({ id: user.id, name: user.username })) || [], [usersData]);
+
+
+  // NOUVEAU: Création de l'objet de mapping pour les options d'autocomplétion
+  const autocompleteOptions = useMemo(() => ({
+    countryId: countryOptions,
+    creatorId: userOptions,
+    updatorId: userOptions,
+  }), [countryOptions, userOptions]);
+
   const fields = useMemo(
     () => [
       { name: 'name', label: t('crud.name'), type: 'text', required: true },
-      { name: 'code', label: t('crud.code'), type: 'text', required: true },
+      { 
+        name: 'countryId', 
+        label: t('crud.country'), 
+        type: 'autocomplete', 
+        required: true,
+        autocompleteProps: {
+          items: countries,
+          onSelect: (id, name) => setSelectedCountry({ id, name }),
+        }
+      },
     ],
-    [t]
+    [countries, t]
   );
 
-  // DÉFINITION DES CHAMPS POUR LA VUE DÉTAILLÉE
   const ViewFields = useMemo(
     () => [
       { name: 'name', label: t('crud.name') },
-      { name: 'code', label: t('crud.code') },
+      { name: 'country', label: t('crud.country'), accessor: (item) => item.country?.name || 'N/A' },
       { name: 'referenceNumber', label: t('crud.reference_number') },
       {
         name: 'isActive',
@@ -50,19 +82,20 @@ export default function CountriesPage() {
       { name: 'createdAt', label: t('crud.created_at'), accessor: (item) => new Date(item.createdAt).toLocaleString() },
       { name: 'updatedAt', label: t('crud.updated_at'), accessor: (item) => new Date(item.updatedAt).toLocaleString() },
       {
-        name: 'towns',
-        label: `${t('crud.city')}(s)`,
+        name: 'citizens',
+        label: `${t('crud.citizen')}(s)`,
         accessor: (item) => {
-          if (!item.towns || item.towns.length === 0) return t('crud.no_elements');
-          const names = item.towns.map((town) => town.name).join(', ');
-          return `${item.towns.length} ${t('crud.city')}(s) : ${names}`;
+          if (!item.citizens || item.citizens.length === 0) return t('crud.no_elements');
+          const names = item.citizens.map((citizen) => citizen.username).join(', ');
+          return `${item.citizens.length} ${t('crud.citizen')}(s) : ${names}`;
         },
       },
     ],
     [t]
   );
 
-  // GESTION DES FILTRES DE L'URL
+  // 2) HOOK POUR GÉRER L'ÉTAT DES FILTRES DE L'URL
+  // On récupère `searchTerm` pour l'utiliser comme valeur de l'input de recherche
   const {
     searchParams,
     searchTerm,
@@ -72,11 +105,12 @@ export default function CountriesPage() {
     handleResetFilters,
     handlePage,
     hasAdvancedFilters,
-  } = useModuleFilters('countries');
+  } = useModuleFilters('towns');
 
+  // 3) PRÉPARATION DES PARAMÈTRES POUR LA REQUÊTE API
   const queryParams = useMemo(() => Object.fromEntries(searchParams.entries()), [searchParams]);
 
-  // LOGIQUE DE GESTION CRUD AVEC PAGINATION ET FILTRES
+  // 4) LOGIQUE DE GESTION CRUD AVEC PAGINATION ET FILTRES
   const {
     items,
     pagination,
@@ -86,35 +120,25 @@ export default function CountriesPage() {
     update,
     softDelete,
     restore,
-  } = useCrudPaginated(countriesService, 'countries', queryParams);
+  } = useCrudPaginated(townsService, 'towns', queryParams);
 
-  // GESTION DE LA MODALE
+  // 5) GESTION DE LA MODALE
   const [modal, setModal] = useState({ open: false, mode: 'create', item: null, id: null });
   const [selectedItemId, setselectedItemId] = useState(null);
   const [modalKey, setModalKey] = useState(0);
   const [showAdvancedFilterModal, setShowAdvancedFilterModal] = useState(false);
 
-  // RÉCUPÉRATION DES DONNÉES UTILISATEUR POUR L'AUTOCOMPLÉTION
-  const { data: usersData, isLoading: isUsersLoading } = useQuery({
-    queryKey: ['usersList'],
-    queryFn: () => usersService.getAll({ isActive: true, limit: -1 }),
-  });
-  const users = usersData?.data?.result?.data?.map(user => ({ id: user.id, name: user.username })) || [];
-
-  // CRÉATION DE L'OBJET DE MAPPING pour AdvancedFilterModal
-  const autocompleteData = useMemo(() => ({
-    creatorId: users,
-    updatorId: users,
-  }), [users]);
+  
 
   // RÉCUPÉRATION DES DÉTAILS D'UN PAYS POUR LA VUE "VIEW"
   const { data: itemDetails, isLoading: isLoadingDetails } = useQuery({
     queryKey: ['country', selectedItemId],
-    queryFn: () => countriesService.getById(selectedItemId),
+    queryFn: () => townsService.getById(selectedItemId),
     enabled: !!selectedItemId,
   });
 
-  // ACTIONS SUR LA MODALE
+
+  // 7) ACTIONS SUR LA MODALE
   const openModal = useCallback((mode, item = null) => {
     let initialFormState = {};
     let itemId = null;
@@ -141,7 +165,7 @@ export default function CountriesPage() {
 
   const handleSave = useCallback(
     (data) => {
-      const payload = { name: data.name, code: data.code };
+      const payload = { name: data.name, countryId: data.countryId };
       modal.mode === 'create' ? create(payload) : update({ id: modal.id, payload });
       closeModal();
     },
@@ -150,14 +174,14 @@ export default function CountriesPage() {
 
   const handleRestore = useCallback((item) => restore({ id: item.id }), [restore]);
 
-  // CONFIGURATION DES CHAMPS AVANCÉS pour AdvancedFilterModal
+  // 8) CONFIGURATION DES CHAMPS AVANCÉS
   const filterFields = useMemo(
     () => [
       { name: 'search', label: t('crud.search'), type: 'text' },
       { name: 'limit', label: t('crud.limit'), type: 'number' },
       { name: 'referenceNumber', label: t('crud.reference_number'), type: 'text' },
       { name: 'name', label: t('crud.name'), type: 'text' },
-      { name: 'code', label: t('crud.code'), type: 'text' },
+      { name: 'countryId', label: t('crud.country'), type: 'autocomplete' },
       { name: 'createdAtStart', label: t('crud.created_at_start'), type: 'date' },
       { name: 'createdAtEnd', label: t('crud.created_at_end'), type: 'date' },
       { name: 'updatedAtStart', label: t('crud.updated_at_start'), type: 'date' },
@@ -190,19 +214,19 @@ export default function CountriesPage() {
     [t]
   );
 
-  // DONNÉES ET EN-TÊTES POUR L'EXPORT EXCEL
+  // 9) DONNÉES ET EN-TÊTES POUR L'EXPORT EXCEL
   const excelData = useMemo(
     () =>
       items.map((item) => ({
         referenceNumber: item.referenceNumber,
         name: item.name,
-        code: item.code,
+        country: item.country?.name || 'N/A',
         isActive: item.isActive ? t('crud.active') : t('crud.inactive'),
         creator: item.creator?.username || 'N/A',
         updator: item.updator?.username || 'N/A',
         createdAt: new Date(item.createdAt).toLocaleString(),
         updatedAt: new Date(item.updatedAt).toLocaleString(),
-        towns: item.towns?.map((town) => town.name).join(', ') || t('crud.no_elements'),
+        citizens: item.citizens?.map((citizen) => citizen.username).join(', ') || t('crud.no_elements'),
       })),
     [items, t]
   );
@@ -211,20 +235,20 @@ export default function CountriesPage() {
     () => [
       { label: t('crud.reference_number'), key: 'referenceNumber' },
       { label: t('crud.name'), key: 'name' },
-      { label: t('crud.code'), key: 'code' },
+      { label: t('crud.country'), key: 'country' },
       { label: t('crud.status'), key: 'isActive' },
       { label: t('crud.creator'), key: 'creator' },
       { label: t('crud.updator'), key: 'updator' },
       { label: t('crud.created_at'), key: 'createdAt' },
       { label: t('crud.updated_at'), key: 'updatedAt' },
-      { label: `${t('crud.city')}(s)`, key: 'towns' },
+      { label: `${t('crud.citizen')}(s)`, key: 'citizens' },
     ],
     [t]
   );
 
   const excelFilename = useMemo(() => `countries-${new Date().toISOString().slice(0, 10)}.csv`, []);
 
-  // SYNCHRONISATION DE L'ÉTAT DÉTAILLÉ POUR LA MODALE
+  // 10) SYNCHRONISATION DE L'ÉTAT DÉTAILLÉ POUR LA MODALE
   useEffect(() => {
     if (itemDetails && modal.mode === 'view') {
       const detailed = itemDetails?.data?.result || null;
@@ -240,7 +264,7 @@ export default function CountriesPage() {
         {/* En-tête de la page */}
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold">{t('modul_title.country')}</h1>
+            <h1 className="text-2xl font-bold">{t('modul_title.city')}</h1>
             <span className="text-md text-gray-500">
               ({pagination.totalItems})
             </span>
@@ -255,6 +279,7 @@ export default function CountriesPage() {
           <input
             placeholder={t('crud.search')}
             className="input input-bordered"
+            // UTILISATION DU NOUVEL ÉTAT LOCAL searchTerm pour une saisie fluide
             value={searchTerm}
             onChange={(e) => handleSearchChange(e.target.value)}
           />
@@ -288,8 +313,8 @@ export default function CountriesPage() {
               <tr>
                 <th>{t('crud.reference_number')}</th>
                 <th>{t('crud.name')}</th>
-                <th>{t('crud.code')}</th>
-                <th>{t('crud.city')}(s)</th>
+                <th>{t('crud.country')}</th>
+                <th>{t('crud.citizen')}(s)</th>
                 <th>{t('crud.actions')}</th>
               </tr>
             </thead>
@@ -299,7 +324,7 @@ export default function CountriesPage() {
                   <td>{c.referenceNumber}</td>
                   <td>{c.name}</td>
                   <td>{c.code}</td>
-                  <td>{c.towns?.length || 0}</td>
+                  <td>{c.citizens?.length || 0}</td>
                   <td className="flex gap-2">
                     <button className="btn btn-sm" onClick={() => openModal('view', c)}>
                       {t('crud.view')}
@@ -373,14 +398,14 @@ export default function CountriesPage() {
 
         {/* Modale des filtres avancés */}
         <AdvancedFilterModal
-          isOpen={showAdvancedFilterModal}
-          onClose={() => setShowAdvancedFilterModal(false)}
-          onApply={handleApplyFilters}
-          onReset={handleResetFilters}
-          filterFields={filterFields}
-          initialFilters={Object.fromEntries(searchParams.entries())}
-          autocompleteData={autocompleteData} // Correct
-        />
+            isOpen={showAdvancedFilterModal}
+            onClose={() => setShowAdvancedFilterModal(false)}
+            onApply={handleApplyFilters}
+            onReset={handleResetFilters}
+            filterFields={filterFields}
+            initialFilters={Object.fromEntries(searchParams.entries())}
+            autocompleteData={autocompleteOptions} // On passe l'objet unique
+            />
       </div>
     </PageContence>
   );
