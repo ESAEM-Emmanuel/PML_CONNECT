@@ -80,6 +80,10 @@
     "delete_error": "Deletion failed!",
     "restore_success": "Restored!",
     "restore_error": "Restoration failure!",
+    "citizen": "Citizen",
+    "company": "Company",
+    
+
 
     "created_at_start": "upper interval creation",
     "created_at_end": "Lower creation interval",

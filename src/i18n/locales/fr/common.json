@@ -82,6 +82,8 @@
     "delete_error": "Échec de la suppression!",
     "restore_success": "Restoré!",
     "restore_error": "Échec de la restoration!",
+    "citizen": "Citoyen",
+    "company": "Entreprise",
 
     "created_at_start": "intervalle sup création",
     "created_at_end": "intervalle inf création",
