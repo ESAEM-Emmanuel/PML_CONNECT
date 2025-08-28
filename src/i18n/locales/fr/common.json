@@ -48,9 +48,10 @@
   },
   "crud": {
     "create": "Créer",
-    "update": "Mettre à jour",
-    "delete": "Supprimer",
-    "restore": "Restorer",
+    "update": "Edit",
+    "approved": "Approuver",
+    "delete": "Supp",
+    "restore": "Res",
     "confirm_delete": "Confirmer la suppression ?",
     "confirm_restore": "Confirmer la restorqtion ?",
     "save": "Enregistrer",
@@ -67,7 +68,8 @@
     "country": "Pays",
     "price": "Prix",
     "city": "Ville",
-    "status": "Etat",
+    "status": "Est actif?",
+    "is_approved": "Est Approuvé?",
     "creator": "Créer par ",
     "updator": "Modifié par",
     "created_at": "Créer le",
@@ -84,11 +86,25 @@
     "restore_error": "Échec de la restoration!",
     "citizen": "Citoyen",
     "company": "Entreprise",
+    "business_sector": "Secteur d'activité",
+    "administrator": "Administrateur",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "email": "E-mail",
+    "nui": "NIU",
+    "logo": "Logo",
+    "validator": "Validé par",
+    "approved_at": "Approuvé le",
+    "employee": "Employé",
+    "password": "Mot de passe",
+    "password_confirm": "Confirmer mot de passe",
 
     "created_at_start": "intervalle sup création",
     "created_at_end": "intervalle inf création",
-    "updatedAtStart": "intervalle sup maj",
+    "updated_at_start": "intervalle sup maj",
     "updated_at_end": "intervalle inf maj",
+    "validate_at_start": "intervalle sup validation",
+    "validate_at_end": "intervalle inf validation",
     "sort_by": "Filter par",
     "order": "ranger de manière",
     "asc": "Croissante ",
@@ -110,7 +126,8 @@
     "dashboard": "Tableau de bord",
     "country": "Gestion des pays",
     "city": "Gestion des villes",
-    "product": "Gestion des produits"
+    "product": "Gestion des produits",
+    "company": "Gestion des Entreprises"
   },
   "country": {
     "name": "Nom du pays",
@@ -163,7 +180,8 @@
     "dashboard": "Tableau de bord",
     "countries": "Pays",
     "cities": "villes",
-    "products": "Produits"
+    "products": "Produits",
+    "companies": "Entreprises"
   },
 
   "dashboard": {

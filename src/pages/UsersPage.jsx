@@ -10,6 +10,8 @@ import { useCrudPaginated } from '../hooks/useCrudPaginated';
 import { useAuth } from '../context/AuthContext';
 
 // SERVICE API
+import { usersService } from '../services/usersService';
+import { profilesService } from '../services/profilesService';
 import { townsService } from '../services/townsService';
 import { countriesService } from '../services/countriesService';
 import { usersService } from '../services/usersService';
@@ -28,6 +30,11 @@ export default function CitiesPage() {
 
     // État local pour la sélection de pays dans la modal
     const [selectedCountry, setSelectedCountry] = useState(null);
+    const [selectedCity, setSelectedCity] = useState(null);
+    const selectedCountryId = watch('countryId');
+    const selectedTownId    = watch('townId');
+    const [photoFile, setPhotoFile] = useState(null);
+    const [photoUrl,  setPhotoUrl]  = useState(''); 
 
     // RÉCUPÉRATION DES PAYS POUR L'AUTOCOMPLÉTION
     const { data: resCountries } = useQuery({
@@ -35,9 +42,21 @@ export default function CitiesPage() {
         queryFn: () => countriesService.getAll({ isActive: true, limit: -1 }),
     });
     const countries = useMemo(() => resCountries?.data?.result?.data || [], [resCountries]);
-    const countryOptions = useMemo(() => 
-        countries.map(country => ({ id: country.id, name: country.name })), 
-        [countries]
+    
+    const { data: resTowns, isLoading: townsLoading } = useQuery({
+        queryKey: ['citiesList'],
+        queryFn: () =>
+          townsService.getAll({
+            countryId: selectedCountryId,
+            isActive: true,
+            limit: -1,
+          }),
+        enabled: !!selectedCountryId,
+      });
+      const towns = resTowns?.data?.result?.data || [];
+      const townsOptions = useMemo(() => 
+      towns.map(town => ({ id: town.id, name: town.name })), 
+        [towns]
     );
 
     // RÉCUPÉRATION DES UTILISATEURS POUR L'AUTOCOMPLÉTION

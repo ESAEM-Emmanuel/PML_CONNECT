@@ -15,10 +15,10 @@ export default function PasswordField({
   return (
     <label className="form-control w-full">
       <div className="label">
-        <span className="label-text">
+        {/* <span className="label-text">
           {placeholder}
           {required && <span className="text-red-500 ml-1">*</span>}
-        </span>
+        </span> */}
       </div>
       <div className="relative">
       <input

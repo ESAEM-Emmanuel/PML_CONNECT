@@ -48,9 +48,10 @@
   },
   "crud": {
     "create": "Create",
-    "update": "Update",
-    "delete": "Delete",
-    "restore": "Restore",
+    "update": "Edit",
+    "approved": "Approved",
+    "delete": "Supp",
+    "restore": "Res",
     "confirm_delete": "Confirm deletion?",
     "confirm_restore": "Confirm restoration?",
     "save": "Save",
@@ -65,7 +66,8 @@
     "code": "Code",
     "city": "Town",
     "country": "Country",
-    "status": "Status",
+    "status": "Is actif?",
+    "is_approved": "Is approved?",
     "creator": "Created by ",
     "updator": "Modified by",
     "created_at": "Created at",
@@ -82,13 +84,27 @@
     "restore_error": "Restoration failure!",
     "citizen": "Citizen",
     "company": "Company",
+    "business_sector": "Business sector",
+    "administrator": "Administrator",
+    "phone": "Phone",
+    "address": "Address",
+    "email": "E-mail",
+    "nui": "NUI",
+    "logo": "Logo",
+    "validator": "Validated by",
+    "approved_at": "Approved on",
+    "employee": "Employee",
+    "password": "Password",
+    "password_confirm": "Confirm password",
+
     
-
-
+    
     "created_at_start": "upper interval creation",
     "created_at_end": "Lower creation interval",
-    "updatedAtStart": "Upper update interval",
+    "updated_at_start": "Upper update interval",
     "updated_at_end": "Lower update interval",
+    "validate_at_start": "Upper update validation",
+    "validate_at_end": "Lower update validation",
     "sort_by": "Sort by",
     "order": "Arrange in order",
     "asc": "Ascending ",
@@ -111,7 +127,8 @@
     "dashboard": "Dashboard",
     "country": "Countries management",
     "city": "Cities management",
-    "product": "Products management"
+    "product": "Products management",
+    "company": "Companies management"
   },
 
 
@@ -166,7 +183,8 @@
     "dashboard": "Dashboard",
     "countries": "Countries",
     "cities": "Cities",
-    "products": "Products"
+    "products": "Products",
+    "companies": "Companies"
   },
 
   "dashboard": {

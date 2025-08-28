@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Globe, ShoppingBasket, MapPin, UserRound, AppWindow  } from 'lucide-react';
+import { Globe, ShoppingBasket,
+  MapPin, UserRound, AppWindow, Building2   } from 'lucide-react';
 
 export default function Sidebar() {
   const { t } = useTranslation();
@@ -42,6 +43,17 @@ export default function Sidebar() {
           >
             <MapPin className="w-4 h-4" />
             {t('sidebar.cities')}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/companies"
+            className={({ isActive }) =>
+              `flex items-center gap-2 ${isActive ? 'active' : ''}`
+            }
+          >
+            <Building2  className="w-4 h-4" />
+            {t('sidebar.companies')}
           </NavLink>
         </li>
         <li>

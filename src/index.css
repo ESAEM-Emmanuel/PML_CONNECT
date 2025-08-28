@@ -19,3 +19,77 @@ html, body {
 .menu {
     max-width: 100%;
   }
+.menu li .active {
+    background-color: oklch(0.95 0.02 240);
+    color: oklch(0.2 0.02 240);
+    border-radius: 0.5rem;
+    font-weight: 600;
+  }
+
+  /* Ajoutez ces styles de scrollbar directement dans le CSS */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dropdown-menu {
+    @apply bg-gray-800/95 ring-gray-700/50;
+  }
+  
+  .dropdown-item {
+    @apply text-gray-200 hover:bg-gray-700/50 hover:text-white;
+  }
+  
+  .dropdown-divider {
+    @apply border-gray-700;
+  }
+}
+@media (max-width: 640px) {
+  .dropdown-menu {
+    @apply w-full left-0 right-0 mx-4;
+    max-width: calc(100% - 2rem);
+  }
+}
+
+.dropdown-menu {
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+:root {
+  --dropdown-bg: white;
+  --dropdown-border: rgba(0, 0, 0, 0.05);
+  --dropdown-hover: rgba(243, 244, 246, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dropdown-bg: rgba(31, 41, 55, 0.95);
+    --dropdown-border: rgba(75, 85, 99, 0.5);
+    --dropdown-hover: rgba(55, 65, 81, 0.5);
+  }
+}
