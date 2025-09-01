@@ -21,16 +21,24 @@ export default function Login() {
       <div className="card-body">
         <h2 className="card-title text-primary">{t('nav.login')}</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <input {...register('username')} placeholder={t('auth.username')} className="input input-bordered w-full" />
+        <span className="label-text">
+            {t('auth.username')}
+            <span className="text-red-500 ml-1">*</span>
+            <input {...register('username')} placeholder={t('auth.username')} className="input input-bordered w-full mb-4" />
+          </span>
           {/* <input {...register('password')} type="password" placeholder={t('auth.password')} className="input input-bordered w-full" /> */}
-          <PasswordField
-            register={register}
-            name="password"
-            placeholder={t('auth.password')}
-            autocomplete="current-password"
-            required={t('errors.required')}
-            error={errors.password}
-          />
+          <span className="label-text mb-4">
+            {t('auth.password')}
+            <span className="text-red-500 ml-1">*</span>
+            <PasswordField
+              register={register}
+              name="password"
+              placeholder={t('auth.password')}
+              autocomplete="current-password"
+              required={t('errors.required')}
+              error={errors.password}
+            />
+          </span>
           <button className="btn btn-primary w-full">{t('auth.login')}</button>
         </form>
         <div className="flex justify-between mt-2 text-sm">

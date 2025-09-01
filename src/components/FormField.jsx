@@ -3,7 +3,7 @@
 export default function FormField({ label, required, error, children }) {
     const showLabel = label || required;
     return (
-      <label className={`form-control w-full ${!showLabel ? 'mt-4' : ''}`}>
+      <label className={`form-control w-full ${!showLabel ? 'mt-2 mb-2' : ''}`}>
         {showLabel && (
           <div className="label">
             <span className="label-text">

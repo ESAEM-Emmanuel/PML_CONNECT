@@ -233,6 +233,9 @@ export default function Signup() {
             />
           </FormField>
 
+          <span className="label-text mt-4">
+            {t('auth.password')}
+          </span>
           <FormField required error={errors.password}>
             <PasswordField
               register={register}
@@ -242,7 +245,9 @@ export default function Signup() {
               error={errors.password}
             />
           </FormField>
-
+          <span className="label-text">
+            {t('auth.password_confirm')}
+          </span>
           <FormField required error={errors.passwordConfirm}>
             <PasswordField
               register={register}

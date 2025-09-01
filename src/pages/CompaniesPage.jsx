@@ -15,7 +15,7 @@ import { companiesService } from '../services/companiesService';
 import { townsService } from '../services/townsService';
 import { countriesService } from '../services/countriesService';
 import { usersService } from '../services/usersService';
-import { profilsService } from '../services/profilsService';
+// import { profilsService } from '../services/profilsService';
 import { uploadFilesService } from '../services/uploadFilesService';
 
 // COMPOSANTS RÉUTILISABLES
@@ -70,6 +70,7 @@ export default function CompaniesPage() {
         items,
         pagination,
         isLoading,
+        create,
         update,
         softDelete,
         restore,
@@ -170,7 +171,7 @@ export default function CompaniesPage() {
             { name: 'createdAt', label: t('crud.created_at'), accessor: (item) => new Date(item.createdAt).toLocaleString() },
             { name: 'updatedAt', label: t('crud.updated_at'), accessor: (item) => new Date(item.updatedAt).toLocaleString() },
             { name: 'approvedAt', label: t('crud.approved_at'), accessor: (item) => item.approvedAt ? new Date(item.approvedAt).toLocaleString() : 'N/A' },
-            { name: 'employees', label: `${t('crud.employee')}(s)`, accessor: (item) => `(${item.employees?.length ?? 0}) ${item.employees?.map((employee) => employee.owner.username).join(', ')}` || t('crud.no_elements') },
+            { name: 'employees', label: `${t('crud.employee')}(s)`, accessor: (item) => `(${item.employees?.length ?? 0}) ${item.employees?.map((employee) => employee.username).join(', ')}` || t('crud.no_elements') },
         ],
         [t]
     );
@@ -212,27 +213,47 @@ export default function CompaniesPage() {
     }, []);
 
     // Fonction de sauvegarde (Création/Mise à jour)
+
     const handleSave = useCallback(
         async (data) => {
             let mediaUrls = [];
-            let logoFile = null;
-            if (data.media && data.media instanceof File) {
-                logoFile = data.media;
-            } else if (Array.isArray(data.media)) {
-                mediaUrls = data.media;
-            }
+            
             try {
-                if (logoFile) {
-                    const formData = new FormData();
-                    formData.append('files', logoFile);
-                    const uploadResponse = await uploadFilesService.createFiles(formData);
-                    if (uploadResponse.data.success && uploadResponse.data.result.length > 0) {
-                        mediaUrls = uploadResponse.data.result.map(file => file.url);
-                    } else {
-                        throw new Error(t('errors.upload_failed'));
+                // Gestion améliorée des médias
+                if (data.media) {
+                    if (data.media instanceof File) {
+                        const formData = new FormData();
+                        formData.append('files', data.media);
+                        const uploadResponse = await uploadFilesService.createFiles(formData);
+                        
+                        if (uploadResponse.data.success && uploadResponse.data.result.length > 0) {
+                            mediaUrls = uploadResponse.data.result.map(file => file.url);
+                        } else {
+                            throw new Error(t('errors.upload_failed'));
+                        }
+                    } else if (Array.isArray(data.media)) {
+                        // Vérifier si c'est un tableau d'URLs ou de Files
+                        const hasFiles = data.media.some(item => item instanceof File);
+                        if (hasFiles) {
+                            // Upload des fichiers
+                            const formData = new FormData();
+                            data.media.forEach(file => formData.append('files', file));
+                            const uploadResponse = await uploadFilesService.createFiles(formData);
+                            
+                            if (uploadResponse.data.success) {
+                                mediaUrls = uploadResponse.data.result.map(file => file.url);
+                            } else {
+                                throw new Error(t('errors.upload_failed'));
+                            }
+                        } else {
+                            // Utiliser directement comme URLs
+                            mediaUrls = data.media;
+                        }
                     }
                 }
-                const mediaPayload = mediaUrls || [];
+    
+                const mediaPayload = mediaUrls;
+    
                 if (modal.mode === 'create') {
                     const companyPayload = {
                         name: data.name,
@@ -244,11 +265,15 @@ export default function CompaniesPage() {
                         phone: data.phone,
                         media: mediaPayload,
                     };
-                    const newCompany = await companiesService.create(companyPayload);
+                    
+                    // const newCompany = await companiesService.create(companyPayload);
+                    const newCompany = await create(companyPayload);
                     const companyId = newCompany.data?.result?.id;
+                    
                     if (!companyId) {
                         throw new Error('Company creation failed. No ID returned.');
                     }
+    
                     const userPayload = {
                         username: data.email,
                         lastName: data.name,
@@ -257,23 +282,15 @@ export default function CompaniesPage() {
                         photo: mediaPayload[0] || '',
                         townId: data.townId,
                         password: data.password,
-                        isActive: true,
-                    };
-                    const newUser = await usersService.create(userPayload);
-                    const ownerId = newUser.data?.result?.id;
-                    if (!ownerId) {
-                        throw new Error('User creation failed. No ID returned.');
-                    }
-                    const profilePayload = {
-                        ownerId: ownerId,
                         companyId: companyId,
                         rank: 'ADMIN',
                         businessSector: data.businessSector,
                         function: t('crud.administrator'),
+                        isActive: true,
                     };
-                    await profilsService.create(profilePayload);
+                    
+                    await usersService.create(userPayload);
                     toast.success(t('crud.creation_success'));
-                    closeModal();
                 } else {
                     const updatePayload = {
                         name: data.name,
@@ -285,19 +302,18 @@ export default function CompaniesPage() {
                         phone: data.phone,
                         media: mediaPayload,
                     };
-                    // 1. Appel de la mise à jour
-                    await update({ id: modal.id, payload: updatePayload }); 
                     
-                    // 2. Si la mise à jour réussit, fermez la modale et affichez un toast
+                    await update({ id: modal.id, payload: updatePayload });
                     toast.success(t('crud.update_success'));
-                    closeModal();
                 }
+                
+                closeModal();
             } catch (error) {
                 console.error("Erreur lors de la sauvegarde :", error);
                 toast.error(error.response?.data?.message || error.message || t('crud.creation_error'));
             }
         },
-        [modal.mode, modal.id, t, closeModal, update]
+        [modal.mode, modal.id, t, closeModal, update, create, uploadFilesService.createFiles]
     );
 
     const handleRestore = useCallback((item) => restore({ id: item.id }), [restore]);
@@ -374,7 +390,7 @@ export default function CompaniesPage() {
         createdAt: new Date(item.createdAt).toLocaleString(),
         updatedAt: new Date(item.updatedAt).toLocaleString(),
         approvedAt: item.approvedAt ? new Date(item.approvedAt).toLocaleString() : 'N/A',
-        employees: item.employees?.map((employee) => employee.owner.username).join(', ') || t('crud.no_elements'),
+        employees: item.employees?.map((employee) => employee.username).join(', ') || t('crud.no_elements'),
     })), [items, t]);
 
     const excelHeaders = useMemo(() => [

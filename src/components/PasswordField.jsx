@@ -24,7 +24,7 @@ export default function PasswordField({
       <input
         {...register(name, { required, ...(validate && { validate }) })}
         type={visible ? 'text' : 'password'}
-        className="input input-bordered w-full pr-12"
+        className="input input-bordered w-full pr-12 mt-2 mb-2"
         />
 
         <button

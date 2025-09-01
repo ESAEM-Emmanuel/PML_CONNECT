@@ -21,6 +21,7 @@ export default function ForgotPassword() {
       <div className="card-body">
         <h2 className="card-title text-primary">{t('auth.reset_title')}</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <span className="text-red-500 ml-1">*</span>
           <input
             {...register('email', { required: true })}
             placeholder={t('auth.email')}
