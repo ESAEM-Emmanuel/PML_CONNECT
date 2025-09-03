@@ -118,6 +118,12 @@
     "download": "Télécharger",
     "page_of_total": "Page {{page}} sur {{total}}",
     "total_items": "Nombre total : {{count}}",
+    "product": "Produit",
+    "image": "Image ",
+    "description": "Description ",
+    "payment_method": "Méthode de paiement",
+    "operator": "Opérateur",
+    "account_number": "N°Compte",
 
     "loading": "Chargement…"
   },
@@ -127,7 +133,17 @@
     "country": "Gestion des pays",
     "city": "Gestion des villes",
     "product": "Gestion des produits",
+    "product_type": "Gestion des types de pruduit",
+    "platform_account": "Gestion des comptes de la plateforme",
     "company": "Gestion des Entreprises"
+  },
+
+  "payment_methods": {
+    "wallets": "Portefeuilles éléctroniques",
+    "payment_cards": "Cartes de paiement",
+    "cryptomonnaies": "Cryptomonnaies",
+    "mobile_payment": "Paiement mobile",
+    "pmlcoin": "PMLCoin"
   },
   "country": {
     "name": "Nom du pays",
@@ -182,7 +198,9 @@
     "cities": "villes",
     "products": "Produits",
     "users": "Utilisateurs",
-    "companies": "Entreprises"
+    "companies": "Entreprises",
+    "platform_accounts": "Comptes App",
+    "product_types": "Types produit"
   },
 
   "dashboard": {

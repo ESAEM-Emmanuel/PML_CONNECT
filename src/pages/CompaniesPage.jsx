@@ -1,6 +1,6 @@
 // src/pages/CompaniesPage.jsx
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { SlidersHorizontal, MoreVertical, Eye, Edit, Trash2, RotateCcw } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -70,8 +70,8 @@ export default function CompaniesPage() {
         items,
         pagination,
         isLoading,
-        create,
         update,
+        create,
         softDelete,
         restore,
     } = useCrudPaginated(companiesService, 'companies', queryParams);
@@ -266,8 +266,8 @@ export default function CompaniesPage() {
                         media: mediaPayload,
                     };
                     
-                    // const newCompany = await companiesService.create(companyPayload);
-                    const newCompany = await create(companyPayload);
+                    const newCompany = await companiesService.create(companyPayload);
+                    // const newCompany = await create(companyPayload);
                     const companyId = newCompany.data?.result?.id;
                     
                     if (!companyId) {
@@ -291,6 +291,7 @@ export default function CompaniesPage() {
                     
                     await usersService.create(userPayload);
                     toast.success(t('crud.creation_success'));
+                    closeModal();
                 } else {
                     const updatePayload = {
                         name: data.name,
@@ -313,7 +314,7 @@ export default function CompaniesPage() {
                 toast.error(error.response?.data?.message || error.message || t('crud.creation_error'));
             }
         },
-        [modal.mode, modal.id, t, closeModal, update, create, uploadFilesService.createFiles]
+        [modal.mode, modal.id, t, closeModal, update, create, usersService.create, uploadFilesService.createFiles]
     );
 
     const handleRestore = useCallback((item) => restore({ id: item.id }), [restore]);

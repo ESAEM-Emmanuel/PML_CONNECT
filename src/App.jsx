@@ -10,6 +10,8 @@ import CountriesPage from './pages/CountriesPage.jsx';
 import CitiesPage from './pages/CitiesPage.jsx';
 import CompaniesPage from './pages/CompaniesPage.jsx';
 import UsersPage from './pages/UsersPage.jsx';
+import ProductTypesPage from './pages/ProductTypesPage.jsx';
+import PlatformAccountsPage from './pages/PlatformAccountsPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import ProductList from './pages/products/ProductList.jsx';
 import ProductForm from './pages/products/ProductForm.jsx';
@@ -30,7 +32,7 @@ export default function App() {
     console.log(user);
     const isSUPER_ADMIN = user && user.isAdmin;
     const isAdminOrStaff = user && (user.isAdmin || user.isStaff);
-    const isAdminOrStaffOrCompanyAdmin = user && (user.isAdmin || user.isStaff || user?.rank === "ADMIN");
+    const isAdminOrStaffOrCompanyAdmin = user && (user.isAdmin || user.isStaff || (user?.rank === "ADMIN" && user?.isApproved));
 
   /* ----------------------------------------------------------
      Largeur de la sidebar (tailwind : w-64 = 16rem = 256px)
@@ -129,6 +131,8 @@ export default function App() {
                   <Route path="/cities" element={<CitiesPage />} />
                   <Route path="/companies" element={<CompaniesPage />} />
                   <Route path="/users" element={<UsersPage />} />
+                  <Route path="/product-types" element={<ProductTypesPage />} />
+                  <Route path="/platform-accounts" element={<PlatformAccountsPage />} />
 
                   <Route path="/products" element={<ProductList />} />
                   <Route path="/products/new" element={<ProductForm />} />

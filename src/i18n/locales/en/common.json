@@ -96,8 +96,6 @@
     "employee": "Employee",
     "password": "Password",
     "password_confirm": "Confirm password",
-
-    
     
     "created_at_start": "upper interval creation",
     "created_at_end": "Lower creation interval",
@@ -118,6 +116,12 @@
     "download": "Download",
     "page_of_total": "Page {{page}} of {{total}}",
     "total_items": "Total number : {{count}}",
+    "product": "Product",
+    "image": "Image ",
+    "description": "Description ",
+    "payment_method": "Payment method",
+    "operator": "Operator",
+    "account_number": "Accoun N°",
 
 
     "loading": "Loading…"
@@ -128,7 +132,17 @@
     "country": "Countries management",
     "city": "Cities management",
     "product": "Products management",
+    "product_type": "Product types",
+    "platform_account": "Platform account management",
     "company": "Companies management"
+  },
+
+  "payment_methods": {
+    "wallets": "Electronics wallets",
+    "payment_cards": "Payment cards",
+    "cryptomonnaies": "Cryptocurrencies",
+    "mobile_payment": "Mobile payment",
+    "pmlcoin": "PMLCoin"
   },
 
 
@@ -185,7 +199,9 @@
     "cities": "Cities",
     "products": "Products",
     "users": "Users",
-    "companies": "Companies"
+    "companies": "Companies",
+    "platform_accounts": "App accounts",
+    "product_types": "Product types"
   },
 
   "dashboard": {

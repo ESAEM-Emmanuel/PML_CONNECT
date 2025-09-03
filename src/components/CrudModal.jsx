@@ -69,7 +69,7 @@ export default function CrudModal({
                                     />
                                 ) : type === 'select' ? (
                                     <select {...register(name, { required })} className="select select-bordered w-full">
-                                        <option value="">{`-- Choisir un ${label.toLowerCase()} --`}</option>
+                                        <option value="">{`-- Choisir un(e) ${label.toLowerCase()} --`}</option>
                                         {options.map((opt) => (
                                             <option key={opt.value} value={opt.value}>
                                                 {opt.label}
