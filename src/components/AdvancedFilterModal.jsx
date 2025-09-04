@@ -228,6 +228,17 @@ const AdvancedFilterModal = ({
                     items={autocompleteData[field.name] || []}
                     onSelect={(id, name) => handleAutocompleteChange(field.name, id)}
                   />
+                ) : field.type === 'checkbox' ? (
+                  <label className="cursor-pointer label">
+                    <span className="label-text">{field.label}</span>
+                    <input
+                      type="checkbox"
+                      name={field.name}
+                      checked={currentFilters[field.name] === 'true'}
+                      onChange={handleChange}
+                      className="checkbox checkbox-primary"
+                    />
+                  </label>
                 ) : (
                   <input
                     type={field.type}
