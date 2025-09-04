@@ -31,7 +31,6 @@ export default function CompaniesPage() {
     // 1. Déclarations d'état et de hooks personnalisés
     // L'ordre est crucial : tout ce qui est utilisé par d'autres fonctions doit être déclaré en premier.
     const { t } = useTranslation();
-    const { userRole } = useAuth();
     const {
         searchParams,
         searchTerm,

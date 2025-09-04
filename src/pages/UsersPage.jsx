@@ -31,10 +31,24 @@ export default function UsersPage() {
     // 1. Déclarations d'état et de hooks personnalisés
     // L'ordre est crucial : tout ce qui est utilisé par d'autres fonctions doit être déclaré en premier.
     const { t } = useTranslation();
+    const RankListLabels = {
+        GENERAL_MANAGER: 'crud.general_manager',
+        HUMAN_RESOURCES_MANAGER: 'crud.human_resources_manager',
+        IT_MANAGER: 'crud.it_manager',
+        OPERATIONS_MANAGER: 'crud.operations_manager',
+        ADMIN: 'crud.admin',
+        COLLABORATOR: 'crud.collaborator',
+    };
+    const categoryProfileLabels = {
+        CLASSIC: 'crud.classic',
+        PREMIUM: 'crud.premium',
+        GOLD: 'crud.gold',
+        PRIVATE_CLUB: 'crud.private_club',
+    };
     const { user } = useAuth();
     const isAdmin = user && (user.isAdmin);
     const isAdminOrStaff = user && (user.isAdmin || user.isStaff);
-    const isCompanyAdmin = user && (user.profilsOwner?.[0]?.rank === "ADMIN");
+    const isCompanyAdmin = user && (user?.rank === "ADMIN");
     const {
         searchParams,
         searchTerm,
@@ -75,6 +89,7 @@ export default function UsersPage() {
         items,
         pagination,
         isLoading,
+        create ,
         update,
         softDelete,
         restore,
@@ -98,134 +113,28 @@ export default function UsersPage() {
     }), [companyOptions,countryOptions, townsOptions, userOptions]);
     
     // Définition des champs du formulaire
-    // const fields = useMemo(
-    //     () => [
-    //         { name: 'username', label: t('crud.username'), type: 'text', required: true },
-    //         { name: 'lastName', label: t('crud.last_name'), type: 'text', required: true },
-    //         {
-    //             name: 'gender',
-    //             label: t('auth.gender'),
-    //             type: 'select',
-    //             required: true,
-    //             options: [
-    //                 { value: 'MALE', label: t('gender.male') },
-    //                 { value: 'FEMALE', label: t('gender.female') }
-    //             ]
-    //         },
-    //         { name: 'firstName', label: t('crud.first_name'), type: 'text', required: false },
-    //         { name: 'email', label: t('crud.email'), type: 'email', required: true },
-    //         { name: 'phone', label: t('crud.phone'), type: 'tel', required: true },
-    //         { name: 'countryId', label: t('crud.country'), type: 'autocomplete', required: true, autocompleteProps: { items: countryOptions, onSelect: (id, name) => setSelectedCountry({ id, name }) } },
-    //         { name: 'townId', label: t('crud.city'), type: 'autocomplete', required: true, autocompleteProps: { items: townsOptions, onSelect: (id, name) => setSelectedCity({ id, name }) } },
-    //         {
-    //             name: 'rank',
-    //             label: t('crud.rank'),
-    //             type: 'select',
-    //             required: false,
-    //             options: [
-    //                 { value: 'GENERAL_MANAGER', label: t('crud.general_manager') },
-    //                 { value: 'HUMAN_RESOURCES_MANAGER', label: t('crud.human_resources_manager') },
-    //                 { value: 'IT_MANAGER', label: t('crud.it_manager') },
-    //                 { value: 'ADMIN', label: t('crud.admin') },
-    //                 { value: 'COLLABORATOR', label: t('crud.commaborator') }
-    //             ]
-    //         },
-    //         {
-    //             name: 'category',
-    //             label: t('crud.category_profil'),
-    //             type: 'select',
-    //             required: false,
-    //             options: [
-    //                 { value: 'CLASSIC', label: t('crud.classic') },
-    //                 { value: 'PREMIUM', label: t('crud.premium') },
-    //                 { value: 'GOLD', label: t('crud.gold') }
-    //             ]
-    //         },
-            
-    //         ...(isCompanyAdmin === 'admin' ? [
-    //             { name: 'companyId', label: t('crud.company'), type: 'autocomplete', required: false, value: user.profilsOwner.companyId },
-    //             { name: 'businessSector', label: t('crud.business_sector'), type: 'text', value: user.profilsOwner.businessSector },
-    //             {
-    //                 name: 'category',
-    //                 label: t('crud.category_profil'),
-    //                 type: 'select',
-    //                 required: false,
-    //                 options: [
-    //                     { value: 'CLASSIC', label: t('crud.classic') },
-    //                     { value: 'PREMIUM', label: t('crud.premium') },
-    //                     { value: 'GOLD', label: t('crud.gold') },
-    //                     { value: 'PRIVATE_CLUB', label: t('crud.private_club') }
-    //                 ]
-    //             },
-    //         ] : []),
-            
-    //         ...(isAdminOrStaff === 'admin' ? [
-    //             { name: 'companyId', label: t('crud.company'), type: 'autocomplete', required: false, autocompleteProps: { items: companyOptions, onSelect: (id, name) => setSelectedCompany({ id, name }) } },
-    //             { name: 'businessSector', label: t('crud.business_sector'), type: 'text', required: false },
-    //             {
-    //                 name: 'category',
-    //                 label: t('crud.category_profil'),
-    //                 type: 'select',
-    //                 required: false,
-    //                 options: [
-    //                     { value: 'CLASSIC', label: t('crud.classic') },
-    //                     { value: 'PREMIUM', label: t('crud.premium') },
-    //                     { value: 'GOLD', label: t('crud.gold') },
-    //                     { value: 'PRIVATE_CLUB', label: t('crud.private_club') }
-    //                 ]
-    //             },
-    //         ] : []),
-
-    //         ...(isAdmin === 'admin' ? [
-    //             { name: 'isStaff', label: t('crud.is_staff'), type: 'text', required: false },
-    //             { name: 'isAdmin', label: t('crud.is_admin'), type: 'text', required: false }
-    //         ] : []),
-    //         { name: 'function', label: t('crud.function'), type: 'text' },
-    //         { name: 'photo', label: t('crud.picture'), type: 'file' },
-    //         // Le champ 'code' est inclus si l'utilisateur est admin
-    //         {
-    //             name: 'password',
-    //             label: t('crud.password'),
-    //             type: 'password',
-    //             required: true,
-    //         },
-    //         {
-    //             name: 'passwordConfirm',
-    //             label: t('crud.password_confirm'),
-    //             type: 'password',
-    //             required: true,
-    //             customProps: {
-    //                 validate: (value, formValues) => value === formValues.password || t('errors.password_mismatch')
-    //             }
-    //         },
-
-    //     ],
-    //     [companyOptions, countryOptions, townsOptions, t, modal.mode]
-    // );
     const fields = useMemo(
         () => [
             { name: 'username', label: t('crud.username'), type: 'text', required: true },
             { name: 'lastName', label: t('crud.last_name'), type: 'text', required: true },
+            { name: 'firstName', label: t('crud.first_name'), type: 'text' },
+            { name: 'email', label: t('crud.email'), type: 'email', required: true },
+            { name: 'phone', label: t('crud.phone'), type: 'tel', required: true },
             {
                 name: 'gender',
                 label: t('auth.gender'),
                 type: 'select',
-                required: true,
                 options: [
                     { value: 'MALE', label: t('gender.male') },
                     { value: 'FEMALE', label: t('gender.female') }
                 ]
             },
-            { name: 'firstName', label: t('crud.first_name'), type: 'text', required: false },
-            { name: 'email', label: t('crud.email'), type: 'email', required: true },
-            { name: 'phone', label: t('crud.phone'), type: 'tel', required: true },
             { name: 'countryId', label: t('crud.country'), type: 'autocomplete', required: true, autocompleteProps: { items: countryOptions, onSelect: (id, name) => setSelectedCountry({ id, name }) } },
             { name: 'townId', label: t('crud.city'), type: 'autocomplete', required: true, autocompleteProps: { items: townsOptions, onSelect: (id, name) => setSelectedCity({ id, name }) } },
             {
                 name: 'rank',
                 label: t('crud.rank'),
                 type: 'select',
-                required: false,
                 options: [
                     { value: 'GENERAL_MANAGER', label: t('crud.general_manager') },
                     { value: 'HUMAN_RESOURCES_MANAGER', label: t('crud.human_resources_manager') },
@@ -238,7 +147,6 @@ export default function UsersPage() {
                 name: 'category',
                 label: t('crud.category_profil'),
                 type: 'select',
-                required: false,
                 options: [
                     { value: 'CLASSIC', label: t('crud.classic') },
                     { value: 'PREMIUM', label: t('crud.premium') },
@@ -247,13 +155,12 @@ export default function UsersPage() {
             },
             
             ...(isCompanyAdmin ? [
-                { name: 'companyId', label: t('crud.company'), type: 'autocomplete', required: false, value: user.profilsOwner?.[0]?.companyId },
-                { name: 'businessSector', label: t('crud.business_sector'), type: 'text', value: user.profilsOwner?.[0]?.businessSector },
+                { name: 'companyId', label: t('crud.company'), type: 'autocomplete', value: user?.companyId },
+                { name: 'businessSector', label: t('crud.business_sector'), type: 'text', value: user?.businessSector },
                 {
                     name: 'category',
                     label: t('crud.category_profil'),
                     type: 'select',
-                    required: false,
                     options: [
                         { value: 'CLASSIC', label: t('crud.classic') },
                         { value: 'PREMIUM', label: t('crud.premium') },
@@ -264,13 +171,12 @@ export default function UsersPage() {
             ] : []),
             
             ...(isAdminOrStaff ? [
-                { name: 'companyId', label: t('crud.company'), type: 'autocomplete', required: false, autocompleteProps: { items: companyOptions, onSelect: (id, name) => setSelectedCompany({ id, name }) } },
-                { name: 'businessSector', label: t('crud.business_sector'), type: 'text', required: false },
+                { name: 'companyId', label: t('crud.company'), type: 'autocomplete', autocompleteProps: { items: companyOptions, onSelect: (id, name) => setSelectedCompany({ id, name }) } },
+                { name: 'businessSector', label: t('crud.business_sector'), type: 'text' },
                 {
                     name: 'category',
                     label: t('crud.category_profil'),
                     type: 'select',
-                    required: false,
                     options: [
                         { value: 'CLASSIC', label: t('crud.classic') },
                         { value: 'PREMIUM', label: t('crud.premium') },
@@ -281,8 +187,8 @@ export default function UsersPage() {
             ] : []),
     
             ...(isAdmin ? [
-                { name: 'isStaff', label: t('crud.is_staff'), type: 'checkbox', required: false },
-                { name: 'isAdmin', label: t('crud.is_admin'), type: 'checkbox', required: false }
+                { name: 'isStaff', label: t('crud.is_staff'), type: 'checkbox' },
+                { name: 'isAdmin', label: t('crud.is_admin'), type: 'checkbox' }
             ] : []),
             
             { name: 'function', label: t('crud.function'), type: 'text' },
@@ -318,15 +224,20 @@ export default function UsersPage() {
             { name: 'email', label: t('crud.email') },
             { name: 'phone', label: t('crud.phone') },
             { name: 'gender', label: t('crud.gender') },
-            { name: 'name', label: t('crud.name') },
+            { name: 'businessSector', label: t('crud.business_sector') },
+            { name: 'function', label: t('crud.function') },
             { name: 'town', label: t('crud.city'), accessor: (item) => item.town?.name || 'N/A' },
-            { name: 'town', label: t('crud.city'), accessor: (item) => item.town?.name || 'N/A' },
-            { name: 'photo', label: t('crud.photo'), accessor: (item) => item.media?.[0] ? <img src={item.media[0]} alt="Logo" className="w-16 h-16 object-contain" /> : 'N/A' },
-            
-            { name: 'rank', label: t('crud.rank'), accessor: (item) => item?.profilsOwner?.[0]?.rank || 'N/A' },
-            { name: 'category', label: t('crud.category'), accessor: (item) => item?.profilsOwner?.[0]?.category || 'N/A' },
-            { name: 'businessSector', label: t('crud.businessSector'), accessor: (item) => item?.profilsOwner?.[0]?.businessSector || 'N/A' },
-            { name: 'function', label: t('crud.function'), accessor: (item) => item?.profilsOwner?.[0]?.function || 'N/A' },
+            {
+                name: 'rank',
+                label: t('crud.rank'),
+                accessor: (item) => t(RankListLabels[item.rank] || item.rank),
+              },
+            {
+                name: 'category',
+                label: t('crud.category'),
+                accessor: (item) => t(categoryProfileLabels[item.category] || item.category),
+              },
+              { name: 'photo', label: t('crud.picture'), accessor: (item) => item?.photo? <img src={item.photo} alt="Image" className="w-16 h-16 object-contain" /> : 'N/A' },
             { 
                 name: 'isStaff', 
                 label: t('crud.is_staff'), 
@@ -376,7 +287,7 @@ export default function UsersPage() {
                 name: 'isApproved', 
                 label: t('crud.is_approved'), 
                 accessor: (item) => (
-                    item?.profilsOwner?.[0] .isApproved ? (
+                    item?.isApproved ? (
                         <div className="tooltip tooltip-right" data-tip={t('crud.approved')}>
                             <CheckCircle size={24} className="text-green-500" />
                         </div>
@@ -393,7 +304,6 @@ export default function UsersPage() {
             { name: 'createdAt', label: t('crud.created_at'), accessor: (item) => new Date(item.createdAt).toLocaleString() },
             { name: 'updatedAt', label: t('crud.updated_at'), accessor: (item) => new Date(item.updatedAt).toLocaleString() },
             { name: 'approvedAt', label: t('crud.approved_at'), accessor: (item) => item.approvedAt ? new Date(item.approvedAt).toLocaleString() : 'N/A' },
-            { name: 'employees', label: `${t('crud.employee')}(s)`, accessor: (item) => `(${item.employees?.length ?? 0}) ${item.employees?.map((employee) => employee.owner.username).join(', ')}` || t('crud.no_elements') },
         ],
         [t]
     );
@@ -404,16 +314,23 @@ export default function UsersPage() {
         let itemId = null;
         if (mode === 'edit' && item) {
             initialFormState = {
-                name: item.name,
-                businessSector: item.businessSector,
-                companyId: item.companyId,
-                countryId: item.town?.countryId,
-                townId: item.townId,
-                address: item.address,
+                username: item.username,
+                lastName: item.lastName,
                 email: item.email,
                 phone: item.phone,
-                nui: item.nui,
-                media: item.media,
+                townId: item.townId,
+                firstName: item.firstName,
+                gender: item.gender,
+                isStaff: item.isStaff,
+                isAdmin: item.isAdmin,
+                rank: item.rank,
+                businessSector: item.businessSector,
+                companyId: item.companyId,
+                function: item.function,
+                countryId: item.town?.countryId,
+                category: item.category,
+                isActive: item.isActive,
+                photo: item.photo,
             };
             setSelectedCompany({ id: item.town?.companyId });
             setSelectedCountry({ id: item.town?.countryId });
@@ -437,175 +354,131 @@ export default function UsersPage() {
     }, []);
 
     // Fonction de sauvegarde (Création/Mise à jour)
-    // const handleSave = useCallback(
-    //     async (data) => {
-    //         let mediaUrls = [];
-    //         let logoFile = null;
-    //         if (data.media && data.media instanceof File) {
-    //             logoFile = data.media;
-    //         } else if (Array.isArray(data.media)) {
-    //             mediaUrls = data.media;
-    //         }
-    //         try {
-    //             if (logoFile) {
-    //                 const formData = new FormData();
-    //                 formData.append('files', logoFile);
-    //                 const uploadResponse = await uploadFilesService.createFiles(formData);
-    //                 if (uploadResponse.data.success && uploadResponse.data.result.length > 0) {
-    //                     mediaUrls = uploadResponse.data.result.map(file => file.url);
-    //                 } else {
-    //                     throw new Error(t('errors.upload_failed'));
-    //                 }
-    //             }
-    //             const mediaPayload = mediaUrls || [];
-    //             if (modal.mode === 'create') {
-    //                 const itemPayload = {
-    //                     username: data.email,
-    //                     lastName: data.name,
-    //                     email: data.email,
-    //                     phone: data.phone,
-    //                     photo: mediaPayload[0] || '',
-    //                     townId: data.townId,
-    //                     password: data.password,
-    //                     isActive: true,
-    //                 };
-    //                 const newItem = await usersService.create(itemPayload);
-    //                 const newItemId = newItem.data?.result?.id;
-    //                 if (!newItemId) {
-    //                     throw new Error('User creation failed. No ID returned.');
-    //                 }
-                    
-    //                 const profilePayload = {
-    //                     ownerId: newItemId,
-    //                     companyId: data.companyId || '',
-    //                     rank: data.rank || '',
-    //                     businessSector: data.businessSector || '',
-    //                     function: data.function || '',
-    //                 };
-    //                 await profilsService.create(profilePayload);
-    //                 toast.success(t('crud.creation_success'));
-    //                 closeModal();
-    //             } else {
-    //                 const updatePayload = {
-    //                     name: data.name,
-    //                     businessSector: data.businessSector,
-    //                     townId: data.townId,
-    //                     address: data.address,
-    //                     nui: data.nui,
-    //                     email: data.email,
-    //                     phone: data.phone,
-    //                     media: mediaPayload,
-    //                 };
-    //                 // 1. Appel de la mise à jour
-    //                 await update({ id: modal.id, payload: updatePayload }); 
-                    
-    //                 // 2. Si la mise à jour réussit, fermez la modale et affichez un toast
-    //                 toast.success(t('crud.update_success'));
-    //                 closeModal();
-    //             }
-    //         } catch (error) {
-    //             console.error("Erreur lors de la sauvegarde :", error);
-    //             toast.error(error.response?.data?.message || error.message || t('crud.creation_error'));
-    //         }
-    //     },
-    //     [modal.mode, modal.id, t, closeModal,profilsService.create, update]
-    // );
     const handleSave = useCallback(
         async (data) => {
-          let mediaUrls = [];
-          let logoFile = null;
-      
-          if (data.photo && data.photo instanceof File) {
-            logoFile = data.photo;
-          } else if (typeof data.photo === 'string') {
-            mediaUrls = [data.photo];
-          }
-      
-          try {
-            if (logoFile) {
-              const formData = new FormData();
-              formData.append('files', logoFile);
-              const uploadResponse = await uploadFilesService.createFiles(formData);
-              if (uploadResponse.data.success && uploadResponse.data.result.length > 0) {
-                mediaUrls = uploadResponse.data.result.map(file => file.url);
-              } else {
-                throw new Error(t('errors.upload_failed'));
-              }
-            }
-      
-            if (modal.mode === 'create') {
-              const userPayload = {
-                username: data.username,
-                lastName: data.lastName,
-                firstName: data.firstName || undefined,
-                email: data.email,
-                phone: data.phone,
-                gender: data.gender,
-                townId: data.townId,
-                password: data.password,
-                photo: mediaUrls[0] || undefined,
-                isStaff: data.isStaff || false,
-                isAdmin: data.isAdmin || false,
-                isActive: true,
-              };
-      
-              const newUser = await usersService.register(userPayload); // ✅ endpoint /register
-              const newUserId = newUser.data?.result?.id;
-      
-              if (!newUserId) {
-                throw new Error('User creation failed. No ID returned.');
-              }
-      
-              const isAllowedToCreateProfile = isAdminOrStaff;
-      
-              if (isAllowedToCreateProfile) {
-                const profilePayload = {
-                  ownerId: newUserId,
-                  companyId: data.companyId || undefined,
-                  rank: data.rank || undefined,
-                  category: data.category || undefined,
-                  businessSector: data.businessSector || undefined,
-                  function: data.function || undefined,
+            // Un tableau pour stocker les URLs des fichiers après l'upload.
+            let mediaUrls = [];
+            
+            try {
+                // --- Étape 1 : Gestion de l'upload des fichiers si une photo est présente.
+                if (data.photo) {
+                    // Si la photo est un seul fichier (nouvel upload).
+                    if (data.photo instanceof File) {
+                        const formData = new FormData();
+                        formData.append('files', data.photo);
+                        
+                        // Appelle le service d'upload pour créer un nouveau fichier.
+                        const uploadResponse = await uploadFilesService.createFiles(formData);
+                        
+                        if (uploadResponse.data.success && uploadResponse.data.result.length > 0) {
+                            // Récupère l'URL du fichier depuis la réponse et la stocke.
+                            mediaUrls = uploadResponse.data.result.map(file => file.url);
+                        } else {
+                            throw new Error(t('errors.upload_failed'));
+                        }
+                    } 
+                    // Si la photo est un tableau de fichiers ou d'URLs (mise à jour).
+                    else if (Array.isArray(data.photo)) {
+                        // Vérifie si le tableau contient au moins un objet File (un fichier à uploader).
+                        const hasFiles = data.photo.some(item => item instanceof File);
+                        
+                        if (hasFiles) {
+                            // S'il y a des fichiers, prépare le `FormData` et les uploade.
+                            const formData = new FormData();
+                            data.photo.forEach(file => {
+                                if (file instanceof File) {
+                                    formData.append('files', file);
+                                }
+                            });
+                            
+                            const uploadResponse = await uploadFilesService.createFiles(formData);
+                            
+                            if (uploadResponse.data.success) {
+                                // Récupère les nouvelles URLs.
+                                const newMediaUrls = uploadResponse.data.result.map(file => file.url);
+                                // Combine les nouvelles URLs avec les anciennes qui n'ont pas été modifiées.
+                                const existingUrls = data.photo.filter(item => typeof item === 'string');
+                                mediaUrls = [...existingUrls, ...newMediaUrls];
+                            } else {
+                                throw new Error(t('errors.upload_failed'));
+                            }
+                        } else {
+                            // S'il n'y a pas de nouveaux fichiers, utilise simplement les URLs existantes.
+                            mediaUrls = data.photo;
+                        }
+                    } else if (typeof data.photo === 'string') {
+                         // Si la photo est déjà une URL (pas de nouvel upload).
+                        mediaUrls = [data.photo];
+                    }
+                }
+    
+                // --- Étape 2 : Préparation du payload final pour la sauvegarde.
+                // Crée le payload en copiant les données de base.
+                let payload = {
+                    username: data.username,
+                    lastName: data.lastName,
+                    email: data.email,
+                    phone: data.phone,
+                    townId: data.townId,
                 };
-      
-                await profilsService.create(profilePayload); // ✅ endpoint /create
-              }
-      
-              toast.success(t('crud.creation_success'));
-              closeModal();
+    
+                // Ajoute les champs optionnels au payload uniquement s'ils existent.
+                if (data.firstName) payload.firstName = data.firstName;
+                if (data.password) payload.password = data.password;
+                if (data.gender) payload.gender = data.gender;
+                if (data.isStaff !== undefined) payload.isStaff = data.isStaff;
+                if (data.isAdmin !== undefined) payload.isAdmin = data.isAdmin;
+                if (data.rank) payload.rank = data.rank;
+                if (data.businessSector) payload.businessSector = data.businessSector;
+                if (data.function) payload.function = data.function;
+                if (data.companyId) payload.companyId = data.companyId;
+                if (data.category) payload.category = data.category;
+                if (data.isActive !== undefined) payload.isActive = data.isActive;
+    
+                // Ajoute les URLs de la photo au payload final.
+                if (mediaUrls.length > 0) {
+                    payload.photo = mediaUrls;
+                } else {
+                    // Gère le cas où aucune photo n'est fournie (pour le clear).
+                    payload.photo = null;
+                }
+    
+                // --- Étape 3 : Appel de la fonction de création ou de mise à jour.
+                if (modal.mode === "create") {
+                    await create(payload);
+                    toast.success(t('crud.creation_success'));
+                } else {
+                    await update({ id: modal.id, payload });
+                    toast.success(t('crud.update_success'));
+                }
+    
+                // Ferme la modale une fois l'opération terminée avec succès.
+                closeModal();
+    
+            } catch (error) {
+                // Gère les erreurs lors de l'upload ou de la sauvegarde.
+                console.error('Erreur lors de la sauvegarde :', error);
+                toast.error(error.response?.data?.message || error.message || t('crud.creation_error'));
             }
-      
-            // 🔧 TODO: Mode édition - à adapter selon votre endpoint de mise à jour utilisateur
-            else {
-              const updatePayload = {
-                lastName: data.lastName,
-                firstName: data.firstName || undefined,
-                email: data.email,
-                phone: data.phone,
-                gender: data.gender,
-                townId: data.townId,
-                photo: mediaUrls[0] || undefined,
-                isStaff: data.isStaff,
-                isAdmin: data.isAdmin,
-                isActive: true,
-              };
-      
-              await update({ id: modal.id, payload: updatePayload }); // ✅ endpoint PUT /users/:id
-              toast.success(t('crud.update_success'));
-              closeModal();
-            }
-          } catch (error) {
-            console.error('Erreur lors de la sauvegarde :', error);
-            toast.error(error.response?.data?.message || error.message || t('crud.creation_error'));
-          }
         },
-        [modal.mode, modal.id, t, closeModal, profilsService.create, update, isAdminOrStaff]
+        // Dépendances de `useCallback` pour s'assurer que la fonction est toujours à jour.
+        [modal.mode, modal.id, t, closeModal, create, update]
     );
 
     const handleRestore = useCallback((item) => restore({ id: item.id }), [restore]);
     const handelApproder = useCallback((item) => update({ id: item.id, payload: {"isApproved": true} }), [update]);
 
     // Configuration des champs pour les filtres avancés
+    const categoryOptions = [
+        { value: 'CLASSIC', label: t('crud.classic') },
+        { value: 'PREMIUM', label: t('crud.premium') },
+        { value: 'GOLD', label: t('crud.gold') },
+      ];
+      
+      // Si admin/staff → ajoute PRIVATE_CLUB
+      if (isAdminOrStaff) {
+        categoryOptions.push({ value: 'PRIVATE_CLUB', label: t('crud.private_club') });
+      }
     const filterFields = useMemo(
         () => [
             { name: 'search', label: t('crud.search'), type: 'text' },
@@ -613,14 +486,62 @@ export default function UsersPage() {
             { name: 'referenceNumber', label: t('crud.reference_number'), type: 'text' },
             { name: 'username', label: t('crud.username'), type: 'text' },
             { name: 'lastName', label: t('crud.last_name'), type: 'text' },
+            { name: 'firstName', label: t('crud.first_name'), type: 'text' },
             { name: 'email', label: t('crud.email'), type: 'email' },
             { name: 'phone', label: t('crud.phone'), type: 'text' },
-            { name: 'townId', label: t('crud.city'), type: 'autocomplete', autocompleteProps: { items: townsOptions } },
+            {
+                name: 'gender',
+                label: t('auth.gender'),
+                type: 'select',
+                options: [
+                    { value: 'MALE', label: t('gender.male') },
+                    { value: 'FEMALE', label: t('gender.female') }
+                ]
+            },
+            { name: 'countryId', label: t('crud.country'), type: 'autocomplete', required: true, autocompleteProps: { items: countryOptions, onSelect: (id, name) => setSelectedCountry({ id, name }) } },
+            { name: 'townId', label: t('crud.city'), type: 'autocomplete', required: true, autocompleteProps: { items: townsOptions, onSelect: (id, name) => setSelectedCity({ id, name }) } },
+            {
+                name: 'rank',
+                label: t('crud.rank'),
+                type: 'select',
+                options: [
+                    { value: 'GENERAL_MANAGER', label: t('crud.general_manager') },
+                    { value: 'HUMAN_RESOURCES_MANAGER', label: t('crud.human_resources_manager') },
+                    { value: 'IT_MANAGER', label: t('crud.it_manager') },
+                    { value: 'ADMIN', label: t('crud.admin') },
+                    { value: 'COLLABORATOR', label: t('crud.collaborator') }
+                ]
+            },
+            
+            ...(isCompanyAdmin ? [
+                { name: 'companyId', label: t('crud.company'), type: 'autocomplete', value: user?.companyId },
+                { name: 'businessSector', label: t('crud.business_sector'), type: 'text', value: user?.businessSector },
+            ] : []),
+            
+            ...(isAdminOrStaff ? [
+                { name: 'companyId', label: t('crud.company'), type: 'autocomplete', autocompleteProps: { items: companyOptions, onSelect: (id, name) => setSelectedCompany({ id, name }) } },
+                { name: 'businessSector', label: t('crud.business_sector'), type: 'text' },
+                
+            ] : []),
+            {
+                name: 'category',
+                label: t('crud.category_profil'),
+                type: 'select',
+                options: categoryOptions,
+            },
+    
+            ...(isAdmin ? [
+                { name: 'isStaff', label: t('crud.is_staff'), type: 'checkbox' },
+                { name: 'isAdmin', label: t('crud.is_admin'), type: 'checkbox' }
+            ] : []),
+            { name: 'function', label: t('crud.function'), type: 'text' },
             { name: 'isApproved', label: t('crud.abrobation'), type: 'bool' },
             { name: 'createdAtStart', label: t('crud.created_at_start'), type: 'date' },
             { name: 'createdAtEnd', label: t('crud.created_at_end'), type: 'date' },
             { name: 'updatedAtStart', label: t('crud.updated_at_start'), type: 'date' },
             { name: 'updatedAtEnd', label: t('crud.updated_at_end'), type: 'date' },
+            { name: 'approvedAtStart', label: t('crud.approved_at_start'), type: 'date' },
+            { name: 'approvedAtEnd', label: t('crud.approved_at_end'), type: 'date' },
             { name: 'creatorId', label: t('crud.creator'), type: 'autocomplete', autocompleteProps: { items: userOptions } },
             { name: 'updatorId', label: t('crud.updator'), type: 'autocomplete', autocompleteProps: { items: userOptions } },
             {
@@ -629,14 +550,21 @@ export default function UsersPage() {
                 type: 'select',
                 options: [
                     { value: 'referenceNumber', label: t('crud.reference_number') },
-                    { value: 'name', label: t('crud.name') },
-                    { value: 'businessSector', label: t('crud.business_sector') },
-                    { value: 'address', label: t('crud.address') },
+                    { value: 'username', label: t('crud.username') },
+                    { value: 'lastName', label: t('crud.last_name') },
+                    { value: 'firstName', label: t('crud.first_name') },
                     { value: 'email', label: t('crud.email') },
                     { value: 'phone', label: t('crud.phone') },
-                    { value: 'nui', label: t('crud.nui') },
+                    { value: 'gender', label: t('crud.gender') },
+                    { value: 'townId', label: t('crud.city') },
+                    { value: 'rank', label: t('crud.rank') },
+                    { value: 'category', label: t('crud.category_profil') },
+                    { value: 'companyId', label: t('crud.company') },
+                    { value: 'businessSector', label: t('crud.business_sector') },
+                    { value: 'function', label: t('crud.function') },
                     { value: 'isApproved', label: t('crud.is_approved') },
                     { value: 'isActive', label: t('crud.status') },
+                    { value: 'approvedA', label: t('crud.approved_at') },
                     { value: 'createdAt', label: t('crud.created_at') },
                     { value: 'updatedAt', label: t('crud.updated_at') },
                 ],
@@ -651,7 +579,7 @@ export default function UsersPage() {
                 ],
             },
         ],
-        [t, townsOptions, userOptions]
+        [t, companyOptions, countryOptions, townsOptions, isAdmin, isAdminOrStaff, isCompanyAdmin, user, userOptions]
     );
 
     // Données et en-têtes pour l'export Excel
@@ -663,21 +591,21 @@ export default function UsersPage() {
         gender: item.gender || 'N/A',
         email: item.email,
         phone: item.phone,
-        businessSector: item?.profilsOwner?.[0]?.businessSector || 'N/A',
-        rank: item?.profilsOwner?.[0]?.rank || 'N/A',
-        category: item?.category?.[0]?.rank || 'N/A',
-        function: item?.category?.[0]?.function || 'N/A',
+        businessSector: item?.businessSector || 'N/A',
+        rank: t(RankListLabels[item.rank] || item.rank) || 'N/A',
+        category: t(categoryProfileLabels[item.category] || item.category) || 'N/A',
+        function: item?.function?.[0]?.function || 'N/A',
         town: item.town?.name || 'N/A',
         isStaff: item.isStaff ? t('1') : t('0'),
         isAdmin: item.isAdmin ? t('1') : t('0'),
-        isApproved: item?.profilsOwner?.[0]?.isApproved ? t('1') : t('0'),
+        isApproved: item?.isApproved ? t('1') : t('0'),
         isActive: item.isActive ? t('1') : t('0'),
         creator: item.creator?.username || 'N/A',
         updator: item.updator?.username || 'N/A',
-        validator: item?.profilsOwner?.[0]?.validator?.username || 'N/A',
-        createdAt: new Date(item.createdAt).toLocaleString(),
-        updatedAt: new Date(item.updatedAt).toLocaleString(),
-        approvedAt: item.approvedAt ? new Date( item?.profilsOwner?.[0].approvedAt).toLocaleString() : 'N/A',
+        validator: item?.validator?.username || 'N/A',
+        createdAt: new Date(item.createdAt).toLocaleString() || 'N/A',
+        updatedAt: new Date(item.updatedAt).toLocaleString() || 'N/A',
+        approvedAt: new Date(item.approvedAt).toLocaleString() || 'N/A',
     })), [items, t]);
 
     const excelHeaders = useMemo(() => [
@@ -703,7 +631,6 @@ export default function UsersPage() {
         { label: t('crud.created_at'), key: 'createdAt' },
         { label: t('crud.updated_at'), key: 'updatedAt' },
         { label: t('crud.approved_at'), key: 'approvedAt' },
-        // { label: `${t('crud.employee')}(s)`, key: 'employees' },
     ], [t]);
 
     const excelFilename = useMemo(() => `companies-${new Date().toISOString().slice(0, 10)}.csv`, []);
@@ -775,7 +702,7 @@ export default function UsersPage() {
                         <tbody>
                             {items.map((c) => (
                                 // <tr key={c.id} className="hover">
-                                <tr key={c.id} className={`hover ${c.profilsOwner?.[0]?.isApproved ? '' : 'bg-secondary'}`}>
+                                <tr key={c.id} className={`hover ${!c?.isApproved && c?.category === 'PRIVATE_CLUB' ? 'bg-secondary' : ''}`}>
                                     <td className="w-24 font-mono text-sm">{c.referenceNumber}</td>
                                     <td className="max-w-xs truncate" title={c.username}>
                                         <span className="font-medium">{c.username}</span>
@@ -783,8 +710,8 @@ export default function UsersPage() {
                                     <td className="max-w-xs truncate" title={c.gender}>
                                         <span className="font-medium">{c.gender}</span>
                                     </td>
-                                    <td className="max-w-xs truncate" title={c.profilsOwner?.[0]?.category}>
-                                        {c.profilsOwner?.[0]?.category}
+                                    <td className="max-w-xs truncate" title={c?.category}>
+                                        {c?.category}
                                     </td>
                                     
                                     <td className="w-20 text-center">

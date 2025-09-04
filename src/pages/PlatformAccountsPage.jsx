@@ -160,8 +160,6 @@ export default function PlatformAccountsPage() {
 
     const handleSave = useCallback(
         async (data) => {
-        let mediaUrls = [];
-    
         try {
 
             // --- Construction dynamique du payload ---
@@ -177,9 +175,11 @@ export default function PlatformAccountsPage() {
     
             if (modal.mode === "create") {
             create(payload);
+            toast.success(t('crud.creation_success'));
             } else {
             // en update → n'envoyer QUE ce qui a changé
             update({ id: modal.id, payload });
+            toast.success(t('crud.update_success'));
             }
     
             closeModal();

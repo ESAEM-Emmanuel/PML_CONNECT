@@ -89,13 +89,13 @@ export default function Sidebar() {
             title: t('sidebar.product_types'),
             href: '/product-types',
             icon: 'ClipboardList',
-            condition: isAdminOrStaff || isCompanyAdmin
+            condition: isAdminOrStaff
         },
         {
             title: t('sidebar.platform_accounts'),
             href: '/platform-accounts',
             icon: 'Banknote',
-            condition: isAdminOrStaff || isCompanyAdmin
+            condition: isAdminOrStaff
         },
         // Ajoutez d'autres éléments ici selon vos besoins
     ], [t, isAdminOrStaff, isCompanyAdmin]);
