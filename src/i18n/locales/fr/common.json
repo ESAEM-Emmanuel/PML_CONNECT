@@ -125,6 +125,32 @@
     "operator": "Opérateur",
     "account_number": "N°Compte",
 
+    "username": "Nom utilisateur",
+    "gender": "Genre",
+    "category": "Ctégorie",
+    "subscription": "Subscription",
+    "sponsor": "Sponsore",
+    "admin": "Administrateur",
+    "general_manager": "Directeur général",
+    "human_resources_manager": "Directeur ressources humaines",
+    "it_manager": "Directeur informatique",
+    "collaborator": "Collaborateur",
+    "classic": "Classique",
+    "premium": "Premium",
+    "gold": "Or",
+    "private_club": "Club privé",
+    "picture": "Photo",
+    "is_staff": "Est Staff?",
+    "is_admin": "Est administrateur?",
+    "male": "Homme",
+    "female": "Femme",
+    "last_name": "Nom",
+    "first_name": "Prénom",
+    "function": "Fonction",
+    "rank": "Niveau hiérarchique",
+    
+
+
     "loading": "Chargement…"
   },
   "modul_title": {

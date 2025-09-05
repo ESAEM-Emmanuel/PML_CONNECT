@@ -45,6 +45,10 @@ export default function UsersPage() {
         GOLD: 'crud.gold',
         PRIVATE_CLUB: 'crud.private_club',
     };
+    const GenderLabels = {
+        MALE: 'crud.male',
+        FEMAL: 'crud.female',
+    };
     const { user } = useAuth();
     const isAdmin = user && (user.isAdmin);
     const isAdminOrStaff = user && (user.isAdmin || user.isStaff);
@@ -113,6 +117,16 @@ export default function UsersPage() {
     }), [companyOptions,countryOptions, townsOptions, userOptions]);
     
     // Définition des champs du formulaire
+    const categoryOptions = [
+        { value: 'CLASSIC', label: t('crud.classic') },
+        { value: 'PREMIUM', label: t('crud.premium') },
+        { value: 'GOLD', label: t('crud.gold') },
+      ];
+      
+      // Si admin/staff → ajoute PRIVATE_CLUB
+      if (isAdminOrStaff) {
+        categoryOptions.push({ value: 'PRIVATE_CLUB', label: t('crud.private_club') });
+      }
     const fields = useMemo(
         () => [
             { name: 'username', label: t('crud.username'), type: 'text', required: true },
@@ -147,43 +161,17 @@ export default function UsersPage() {
                 name: 'category',
                 label: t('crud.category_profil'),
                 type: 'select',
-                options: [
-                    { value: 'CLASSIC', label: t('crud.classic') },
-                    { value: 'PREMIUM', label: t('crud.premium') },
-                    { value: 'GOLD', label: t('crud.gold') }
-                ]
+                options: categoryOptions,
             },
             
             ...(isCompanyAdmin ? [
                 { name: 'companyId', label: t('crud.company'), type: 'autocomplete', value: user?.companyId },
                 { name: 'businessSector', label: t('crud.business_sector'), type: 'text', value: user?.businessSector },
-                {
-                    name: 'category',
-                    label: t('crud.category_profil'),
-                    type: 'select',
-                    options: [
-                        { value: 'CLASSIC', label: t('crud.classic') },
-                        { value: 'PREMIUM', label: t('crud.premium') },
-                        { value: 'GOLD', label: t('crud.gold') },
-                        { value: 'PRIVATE_CLUB', label: t('crud.private_club') }
-                    ]
-                },
             ] : []),
             
             ...(isAdminOrStaff ? [
                 { name: 'companyId', label: t('crud.company'), type: 'autocomplete', autocompleteProps: { items: companyOptions, onSelect: (id, name) => setSelectedCompany({ id, name }) } },
                 { name: 'businessSector', label: t('crud.business_sector'), type: 'text' },
-                {
-                    name: 'category',
-                    label: t('crud.category_profil'),
-                    type: 'select',
-                    options: [
-                        { value: 'CLASSIC', label: t('crud.classic') },
-                        { value: 'PREMIUM', label: t('crud.premium') },
-                        { value: 'GOLD', label: t('crud.gold') },
-                        { value: 'PRIVATE_CLUB', label: t('crud.private_club') }
-                    ]
-                },
             ] : []),
     
             ...(isAdmin ? [
@@ -210,7 +198,30 @@ export default function UsersPage() {
                         validate: (value, formValues) => value === formValues.password || t('errors.password_mismatch')
                     }
                 }
-            ] : [])
+            ] : []),
+            ...(modal.mode === 'edit' ? [
+                {
+                    name: 'oldPassword',
+                    label: t('crud.old_password'),
+                    type: 'password',
+                    required: true,
+                },
+                {
+                    name: 'newPassword',
+                    label: t('crud.new_password'),
+                    type: 'password',
+                    required: true,
+                },
+                {
+                    name: 'confirmNewPassword',
+                    label: t('crud.confirm_new_password'),
+                    type: 'password',
+                    required: true,
+                    customProps: {
+                        validate: (value, formValues) => value === formValues.password || t('errors.password_mismatch')
+                    }
+                },
+            ] : []),
         ],
         [companyOptions, countryOptions, townsOptions, t, modal.mode, isAdmin, isAdminOrStaff, isCompanyAdmin, user]
     );
@@ -223,7 +234,11 @@ export default function UsersPage() {
             { name: 'firstName', label: t('crud.first_name') },
             { name: 'email', label: t('crud.email') },
             { name: 'phone', label: t('crud.phone') },
-            { name: 'gender', label: t('crud.gender') },
+            {
+                name: 'gender',
+                label: t('crud.gender'),
+                accessor: (item) => t(GenderLabels[item.gender] || item.gender)|| 'N/A',
+            },
             { name: 'businessSector', label: t('crud.business_sector') },
             { name: 'function', label: t('crud.function') },
             { name: 'town', label: t('crud.city'), accessor: (item) => item.town?.name || 'N/A' },
@@ -231,13 +246,13 @@ export default function UsersPage() {
                 name: 'rank',
                 label: t('crud.rank'),
                 accessor: (item) => t(RankListLabels[item.rank] || item.rank),
-              },
+            },
             {
                 name: 'category',
                 label: t('crud.category'),
                 accessor: (item) => t(categoryProfileLabels[item.category] || item.category),
-              },
-              { name: 'photo', label: t('crud.picture'), accessor: (item) => item?.photo? <img src={item.photo} alt="Image" className="w-16 h-16 object-contain" /> : 'N/A' },
+            },
+            { name: 'photo', label: t('crud.picture'), accessor: (item) => item?.photo? <img src={item.photo} alt="Image" className="w-16 h-16 object-contain" /> : 'N/A' },
             { 
                 name: 'isStaff', 
                 label: t('crud.is_staff'), 
@@ -413,7 +428,6 @@ export default function UsersPage() {
                 }
     
                 // --- Étape 2 : Préparation du payload final pour la sauvegarde.
-                // Crée le payload en copiant les données de base.
                 let payload = {
                     username: data.username,
                     lastName: data.lastName,
@@ -437,7 +451,7 @@ export default function UsersPage() {
     
                 // Ajoute les URLs de la photo au payload final.
                 if (mediaUrls.length > 0) {
-                    payload.photo = mediaUrls;
+                    payload.photo = mediaUrls[0];
                 } else {
                     // Gère le cas où aucune photo n'est fournie (pour le clear).
                     payload.photo = null;
@@ -468,17 +482,6 @@ export default function UsersPage() {
     const handleRestore = useCallback((item) => restore({ id: item.id }), [restore]);
     const handelApproder = useCallback((item) => update({ id: item.id, payload: {"isApproved": true} }), [update]);
 
-    // Configuration des champs pour les filtres avancés
-    const categoryOptions = [
-        { value: 'CLASSIC', label: t('crud.classic') },
-        { value: 'PREMIUM', label: t('crud.premium') },
-        { value: 'GOLD', label: t('crud.gold') },
-      ];
-      
-      // Si admin/staff → ajoute PRIVATE_CLUB
-      if (isAdminOrStaff) {
-        categoryOptions.push({ value: 'PRIVATE_CLUB', label: t('crud.private_club') });
-      }
     const filterFields = useMemo(
         () => [
             { name: 'search', label: t('crud.search'), type: 'text' },
@@ -588,7 +591,7 @@ export default function UsersPage() {
         username: item.username || 'N/A',
         lastName: item.lastName || 'N/A',
         firstName: item.firstName || 'N/A',
-        gender: item.gender || 'N/A',
+        gender: t(GenderLabels[item.gender] || item.gender) || 'N/A',
         email: item.email,
         phone: item.phone,
         businessSector: item?.businessSector || 'N/A',
@@ -633,7 +636,7 @@ export default function UsersPage() {
         { label: t('crud.approved_at'), key: 'approvedAt' },
     ], [t]);
 
-    const excelFilename = useMemo(() => `companies-${new Date().toISOString().slice(0, 10)}.csv`, []);
+    const excelFilename = useMemo(() => `users-${new Date().toISOString().slice(0, 10)}.csv`, []);
 
     useEffect(() => {
         if (itemDetails && modal.mode === 'view') {
@@ -708,10 +711,10 @@ export default function UsersPage() {
                                         <span className="font-medium">{c.username}</span>
                                     </td>
                                     <td className="max-w-xs truncate" title={c.gender}>
-                                        <span className="font-medium">{c.gender}</span>
+                                        <span className="font-medium">{t(GenderLabels[c.gender] || c.gender) || 'N/A'}</span>
                                     </td>
                                     <td className="max-w-xs truncate" title={c?.category}>
-                                        {c?.category}
+                                        {t(categoryProfileLabels[c.category] || c.category) || 'N/A'}
                                     </td>
                                     
                                     <td className="w-20 text-center">

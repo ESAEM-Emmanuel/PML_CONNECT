@@ -197,7 +197,7 @@ export default function CrudModal({
 
                                 {/* Rendu conditionnel des différents types de champs */}
                                 {
-                                 type === 'checkbox' ? (
+                                type === 'checkbox' ? (
                                     <input
                                         {...register(name)}
                                         type="checkbox"
@@ -262,9 +262,9 @@ export default function CrudModal({
                 {isView && initialData && (
                     <div className="py-4">
                         {viewFields.map((field) => (
-                            <p key={field.name} className="mb-2">
-                                <strong>{field.label} :</strong> {getFieldValue(initialData, field)}
-                            </p>
+                        <div key={field.name} className="mb-2">
+                            <strong>{field.label} :</strong> {getFieldValue(initialData, field)}
+                        </div>
                         ))}
                     </div>
                 )}

@@ -230,7 +230,7 @@ const AdvancedFilterModal = ({
                   />
                 ) : field.type === 'checkbox' ? (
                   <label className="cursor-pointer label">
-                    <span className="label-text">{field.label}</span>
+                    {/* <span className="label-text">{field.label}</span> */}
                     <input
                       type="checkbox"
                       name={field.name}
